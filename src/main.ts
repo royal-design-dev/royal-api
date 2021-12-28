@@ -24,9 +24,9 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  await app.listen(3000);
+  await app.listen(5000);
 
-  Logger.log(`Listening on http://localhost:3000`, 'Bootstrap');
+  Logger.log(`Listening on http://localhost:5000`, 'Bootstrap');
 }
 
 bootstrap();
