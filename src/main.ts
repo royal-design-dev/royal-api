@@ -15,7 +15,7 @@ async function bootstrap() {
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
 
-  SwaggerModule.setup('doc', app, swaggerDocument);
+  SwaggerModule.setup('api', app, swaggerDocument);
 
   app.useGlobalFilters(new EntityNotFoundExceptionFilter());
   app.useGlobalPipes(
