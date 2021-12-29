@@ -8,6 +8,12 @@ import { EntityNotFoundExceptionFilter } from './common/filters/entity-not-found
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('/api');
+  app.useGlobalFilters(new EntityNotFoundExceptionFilter());
+  app.useGlobalPipes(
+    new ValidationPipe({ transform: true, skipMissingProperties: false }),
+  );
+
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Royal api')
     .setVersion('1.0')
@@ -15,12 +21,7 @@ async function bootstrap() {
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
 
-  SwaggerModule.setup('/api/doc', app, swaggerDocument);
-
-  app.useGlobalFilters(new EntityNotFoundExceptionFilter());
-  app.useGlobalPipes(
-    new ValidationPipe({ transform: true, skipMissingProperties: false }),
-  );
+  SwaggerModule.setup('/api/docs', app, swaggerDocument);
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
