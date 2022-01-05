@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CategoryEntity } from 'src/categories/entity/categories.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'shots' })
 export class ShotEntity {
@@ -16,4 +23,8 @@ export class ShotEntity {
 
   @Column({ type: 'varchar', length: 300 })
   shotUrl: string;
+
+  @ManyToMany(() => CategoryEntity)
+  @JoinTable()
+  categories: [];
 }
