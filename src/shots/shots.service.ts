@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShotsRepository } from './shots.repository';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
+import { ShotsFilterDto } from './types/dto/shots.dto';
 
 @Injectable()
 export class ShotsService {
@@ -10,8 +11,8 @@ export class ShotsService {
     private readonly shotsRepository: ShotsRepository,
   ) {}
 
-  async findAndCount() {
-    return this.shotsRepository.findAllAndCount();
+  async findAndCount(filter: ShotsFilterDto) {
+    return this.shotsRepository.findAllAndCount(filter);
   }
 
   async create(shot: ShotsCreateDto) {

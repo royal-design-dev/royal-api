@@ -1,4 +1,5 @@
 import { CategoryEntity } from 'src/categories/entity/categories.entity';
+import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
 import {
   Column,
   Entity,
@@ -7,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity({ name: 'shots' })
+@Entity('shots')
 export class ShotEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -26,5 +27,5 @@ export class ShotEntity {
 
   @ManyToMany(() => CategoryEntity)
   @JoinTable()
-  categories: [];
+  categories: CategoriesCreateRo[];
 }

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -15,15 +16,20 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { UploadsService } from 'src/uploads/uploads.service';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
+import { ShotsFilterDto } from './types/dto/shots.dto';
 import { ShotsCreateRo } from './types/ro/shots-create.ro';
 import { ShotsListAndCountRo } from './types/ro/shots.ro';
 
 @ApiTags('shots')
 @Controller('shots')
 export class ShotsController {
-  constructor(private readonly shotsService: ShotsService) {}
+  constructor(
+    private readonly shotsService: ShotsService,
+    private readonly uploadsService: UploadsService,
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -35,15 +41,12 @@ export class ShotsController {
   })
   @HttpCode(HttpStatus.OK)
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  async getAllAndCount(): Promise<ShotsListAndCountRo> {
-    const [data, count] = await this.shotsService.findAndCount();
+  async getAllAndCount(
+    @Query() filter: ShotsFilterDto,
+  ): Promise<ShotsListAndCountRo> {
+    const [data, count] = await this.shotsService.findAndCount(filter);
 
     return { data, count };
-  }
-
-  @Get(':id')
-  getById(@Param('id') id: string) {
-    return `get by id - ${id}`;
   }
 
   @Post()
