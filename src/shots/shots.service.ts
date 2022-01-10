@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShotsRepository } from './shots.repository';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
@@ -19,5 +19,12 @@ export class ShotsService {
     const item = this.shotsRepository.create(shot);
 
     return await this.shotsRepository.save(item);
+  }
+
+  async remove(id: string) {
+    const rows = await this.shotsRepository.delete({ id });
+
+    if (rows.affected === 0)
+      throw new NotFoundException(`Shot with id ${id} not found`);
   }
 }

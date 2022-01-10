@@ -13,6 +13,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import Auth from 'src/auth/guards/auth.guard';
 import { UsersCreateDto } from './types/dto/users-create.dto';
 import { UsersCreateRo } from './types/ro/users-create.ro';
 import { UsersService } from './users.service';
@@ -23,6 +24,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @Auth()
   @ApiOperation({
     summary: 'Create user',
   })

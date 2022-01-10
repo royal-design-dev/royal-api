@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 
 import { LoginRo } from './types/ro/login.ro';
@@ -55,7 +55,7 @@ export class TokenService {
         login: user.login,
       });
 
-      await this.refreshTokenRepository.delete(token.userId);
+      await this.refreshTokenRepository.delete({ userId: token.userId });
 
       const refreshToken = await this.createRefreshToken({
         userId: token.userId,

@@ -14,6 +14,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import Auth from 'src/auth/guards/auth.guard';
 import { CategoriesService } from './categories.service';
 import { CategoriesCreateDto } from './types/dto/categories-create.dto';
 import { CategoriesCreateRo } from './types/ro/categories-create.ro';
@@ -25,6 +26,7 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @Auth()
   @ApiOperation({
     summary: 'Create category',
   })

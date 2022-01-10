@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Query,
 } from '@nestjs/common';
@@ -14,9 +16,10 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { UploadsService } from 'src/uploads/uploads.service';
+import Auth from 'src/auth/guards/auth.guard';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
@@ -26,10 +29,26 @@ import { ShotsListAndCountRo } from './types/ro/shots.ro';
 @ApiTags('shots')
 @Controller('shots')
 export class ShotsController {
-  constructor(
-    private readonly shotsService: ShotsService,
-    private readonly uploadsService: UploadsService,
-  ) {}
+  constructor(private readonly shotsService: ShotsService) {}
+
+  @Post()
+  @Auth()
+  @ApiOperation({
+    summary: 'Create shot',
+  })
+  @ApiBody({
+    description: 'Shots object that needs to be added',
+    type: ShotsCreateDto,
+  })
+  @ApiCreatedResponse({
+    description: 'Successful operation',
+    type: ShotsCreateRo,
+  })
+  @HttpCode(HttpStatus.CREATED)
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  async create(@Body() shotDto: ShotsCreateDto) {
+    return await this.shotsService.create(shotDto);
+  }
 
   @Get()
   @ApiOperation({
@@ -49,21 +68,20 @@ export class ShotsController {
     return { data, count };
   }
 
-  @Post()
+  @Delete(':id')
+  @Auth()
   @ApiOperation({
-    summary: 'Create shot',
+    summary: 'Delete a shot',
   })
-  @ApiBody({
-    description: 'Shots object that needs to be added',
-    type: ShotsCreateDto,
+  @ApiParam({
+    description: 'id of shot to delete',
+    name: 'id',
   })
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     description: 'Successful operation',
-    type: ShotsCreateRo,
   })
-  @HttpCode(HttpStatus.CREATED)
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  create(@Body() shotDto: ShotsCreateDto) {
-    return this.shotsService.create(shotDto);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.shotsService.remove(id);
   }
 }

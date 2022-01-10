@@ -16,13 +16,19 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import Auth from './guards/auth.guard';
+import { TokenService } from './token.service';
 import { LoginUserDto } from './types/dto/login-user.dto';
+import { RefreshTokensDto } from './types/dto/refresh-tokens.dto';
 import { LoginRo } from './types/ro/login.ro';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly tokenService: TokenService,
+  ) {}
 
   @Post('/login')
   @HttpCode(HttpStatus.OK)
@@ -50,5 +56,24 @@ export class AuthController {
       );
 
     return loginResults;
+  }
+
+  @Post('refresh-tokens')
+  @Auth()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Refresh user tokens',
+  })
+  @ApiOkResponse({
+    description: 'Successful operation',
+    type: LoginRo,
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  public async refreshTokens(
+    @Body(new ValidationPipe()) refreshTokens: RefreshTokensDto,
+  ): Promise<LoginRo> {
+    return this.tokenService.getAccessTokenFromRefreshToken(
+      refreshTokens.refresh_token,
+    );
   }
 }

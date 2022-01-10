@@ -17,6 +17,7 @@ async function bootstrap() {
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Royal api')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);

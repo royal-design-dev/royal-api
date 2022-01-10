@@ -7,6 +7,7 @@ import { DribbbleModule } from './dribbble/dribbble.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
     UploadsModule,
     AuthModule,
     UsersModule,
+    MailerModule,
   ],
   controllers: [],
   providers: [],

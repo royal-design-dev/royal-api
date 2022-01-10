@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import bcrypt from 'bcryptjs';
+import { hash, compare } from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { RefreshToken } from 'src/auth/entity/refreshtoken.entity';
 
@@ -33,12 +33,12 @@ export class UsersEntity {
   @BeforeUpdate()
   async hashPassword() {
     if (this.password) {
-      this.password = await bcrypt.hash(this.password, 12);
+      this.password = await hash(this.password, 12);
     }
   }
 
   async comparePassword(attempt: string): Promise<boolean> {
-    return await bcrypt.compare(attempt, this.password);
+    return await compare(attempt, this.password);
   }
 
   constructor(partial?: Partial<UsersEntity>) {

@@ -17,6 +17,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
+import Auth from 'src/auth/guards/auth.guard';
 import { UploadFileDto } from './types/dto/uploads.dto';
 import { UploadFileRo } from './types/ro/uploads.ro';
 import { UploadsService } from './uploads.service';
@@ -27,6 +28,7 @@ export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
 
   @Post()
+  @Auth()
   @ApiOperation({
     summary: 'Upload image',
   })
