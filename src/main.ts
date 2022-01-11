@@ -7,7 +7,7 @@ import { EntityNotFoundExceptionFilter } from './common/filters/entity-not-found
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors();
   app.setGlobalPrefix('/api');
   app.useGlobalFilters(new EntityNotFoundExceptionFilter());
   app.useGlobalPipes(

@@ -18,14 +18,12 @@ import { MailerService } from './mailer.service';
 import { SendMessageDto } from './types/dto/send-message.dto';
 
 @ApiTags('mailer')
-@ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
 @Controller('mailer')
 export class MailerController {
   constructor(private readonly mailerService: MailerService) {}
 
   @Post()
   @HttpCode(HttpStatus.OK)
-  @ApiConsumes('multipart/form-data')
   @ApiBody({ type: SendMessageDto })
   @ApiOperation({
     summary: 'Send a new mail',
@@ -33,7 +31,8 @@ export class MailerController {
   @ApiOkResponse({
     description: 'Successful operation',
   })
-  async sendMail(@Body(new ValidationPipe()) message: SendMessageDto) {
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  async sendMail(@Body() message: SendMessageDto) {
     return this.mailerService.sendMail(message);
   }
 }

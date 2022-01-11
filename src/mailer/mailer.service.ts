@@ -26,21 +26,15 @@ export class MailerService {
 
   async sendMail({
     message = 'message',
-    files = [],
     subject = 'subject',
     receiver = '',
   }: SendMessageDto) {
-    // const attachmentsArray = files.map((file: FastifyFile) => ({
-    //   filename: file.filename,
-    //   content: file.data,
-    //   encoding: file.encoding,
-    // }))
-    // const payload: MessagePayload = {
-    //   to: receiver,
-    //   subject: subject,
-    //   text: message,
-    //   attachments: attachmentsArray,
-    // }
-    // await this._transporter.sendMail(payload)
+    const payload = {
+      to: receiver,
+      subject: subject,
+      text: message,
+    };
+
+    await this._transporter.sendMail(payload);
   }
 }

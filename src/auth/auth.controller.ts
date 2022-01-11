@@ -30,7 +30,7 @@ export class AuthController {
     private readonly tokenService: TokenService,
   ) {}
 
-  @Post('/login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Logs user into the system',
@@ -59,7 +59,6 @@ export class AuthController {
   }
 
   @Post('refresh-tokens')
-  @Auth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Refresh user tokens',
@@ -75,5 +74,19 @@ export class AuthController {
     return this.tokenService.getAccessTokenFromRefreshToken(
       refreshTokens.refresh_token,
     );
+  }
+
+  @Post('check-tokens')
+  @Auth()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Check user tokens',
+  })
+  @ApiOkResponse({
+    description: 'Successful operation',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  public checkingTokens(): boolean {
+    return true;
   }
 }
