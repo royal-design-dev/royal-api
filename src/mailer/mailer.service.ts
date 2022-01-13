@@ -20,6 +20,7 @@ export class MailerService {
       },
       {
         from: this.configService.get('MAILER_USER_FROM'),
+        to: this.configService.get('MAILER_USER_TO'),
       },
     );
   }
@@ -30,8 +31,7 @@ export class MailerService {
     receiver = '',
   }: SendMessageDto) {
     const payload = {
-      to: receiver,
-      subject: subject,
+      subject: `${subject} ${receiver}`,
       text: message,
     };
 
