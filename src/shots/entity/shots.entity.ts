@@ -20,9 +20,6 @@ export class ShotEntity {
   title: string;
 
   @Column({ type: 'varchar', length: 300 })
-  subtitle: string;
-
-  @Column({ type: 'varchar', length: 300 })
   shotUrl: string;
 
   @ManyToMany(() => CategoryEntity)

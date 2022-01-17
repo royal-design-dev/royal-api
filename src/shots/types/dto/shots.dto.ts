@@ -23,10 +23,6 @@ export class ShotsDto implements Readonly<ShotsDto> {
   title: string;
 
   @ApiProperty()
-  @IsString()
-  subtitle: string;
-
-  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   shotUrl: string;
