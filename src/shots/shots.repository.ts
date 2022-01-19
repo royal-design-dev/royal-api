@@ -9,10 +9,9 @@ export class ShotsRepository extends Repository<ShotEntity> {
   private readonly alias = 'shots';
 
   async findAllAndCount({ categories }: ShotsFilterDto) {
-    const builder = this.createQueryBuilder(this.alias).leftJoinAndSelect(
-      `${this.alias}.categories`,
-      'categories',
-    );
+    const builder = this.createQueryBuilder(this.alias)
+      .leftJoinAndSelect(`${this.alias}.categories`, 'categories')
+      .orderBy(`${this.alias}.created_at`, 'DESC');
 
     if (categories?.length)
       builder.andWhere('categories.name IN (:...categories)', {

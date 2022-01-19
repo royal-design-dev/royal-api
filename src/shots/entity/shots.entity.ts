@@ -2,6 +2,7 @@ import { CategoryEntity } from 'src/categories/entity/categories.entity';
 import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -21,6 +22,9 @@ export class ShotEntity {
 
   @Column({ type: 'varchar', length: 300 })
   shotUrl: string;
+
+  @CreateDateColumn()
+  created_at: Date;
 
   @ManyToMany(() => CategoryEntity)
   @JoinTable()
