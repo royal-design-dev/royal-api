@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { v2 } from 'cloudinary';
-import { UploadCloud, UploadFileRo } from './types/ro/uploads.ro';
+import { UploadFilesRo } from './types/ro/uploads.ro';
 
 @Injectable()
 export class UploadsService {
@@ -14,13 +14,18 @@ export class UploadsService {
     });
   }
 
-  async upload(file: Express.Multer.File): Promise<UploadFileRo> {
-    return await new Promise((resolve, reject) => {
-      v2.uploader.upload(file.path, (error, result: UploadCloud) => {
-        if (error) return reject(error);
+  async upload(files: Express.Multer.File[]): Promise<UploadFilesRo> {
+    const promises = files.map((file) => v2.uploader.upload(file.path));
 
-        resolve({ location: result.url });
-      });
+    return new Promise((resolve, reject) => {
+      Promise.all(promises).then(
+        (data) =>
+          resolve({
+            locations: data.map(({ url: location }) => ({ location })),
+          }),
+        (error) =>
+          reject(new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)),
+      );
     });
   }
 }

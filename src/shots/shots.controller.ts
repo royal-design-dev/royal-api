@@ -68,6 +68,23 @@ export class ShotsController {
     return { data, count };
   }
 
+  @Get(':id')
+  @ApiOperation({
+    summary: 'Get Shot by id',
+  })
+  @ApiParam({
+    description: 'id of shot to get',
+    name: 'id',
+  })
+  @ApiOkResponse({
+    description: 'Successful operation',
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  async getById(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.shotsService.findById(id);
+  }
+
   @Delete(':id')
   @Auth()
   @ApiOperation({

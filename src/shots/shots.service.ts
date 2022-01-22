@@ -15,6 +15,10 @@ export class ShotsService {
     return this.shotsRepository.findAllAndCount(filter);
   }
 
+  async findById(id: string) {
+    return this.shotsRepository.findOneOrFail({ id });
+  }
+
   async create(shot: ShotsCreateDto) {
     const item = this.shotsRepository.create(shot);
 

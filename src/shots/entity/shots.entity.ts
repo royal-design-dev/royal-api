@@ -15,9 +15,6 @@ export class ShotEntity {
   id: string;
 
   @Column({ type: 'varchar', length: 300 })
-  picture: string;
-
-  @Column({ type: 'varchar', length: 300 })
   title: string;
 
   @Column({ type: 'varchar', length: 300 })
@@ -25,6 +22,12 @@ export class ShotEntity {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Column({ type: 'varchar', length: 300 })
+  picture: string;
+
+  @Column({ nullable: false, type: 'varchar', length: 300, default: '' })
+  picture_banner: string;
 
   @ManyToMany(() => CategoryEntity)
   @JoinTable()

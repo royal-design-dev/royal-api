@@ -6,5 +6,5 @@ export class UploadFileDto {
     type: 'string',
     format: 'binary',
   })
-  file: Express.Multer.File;
+  files: Express.Multer.File[];
 }

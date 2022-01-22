@@ -19,6 +19,11 @@ export class ShotsDto implements Readonly<ShotsDto> {
   picture: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  picture_banner: string;
+
+  @ApiProperty()
   @IsString()
   title: string;
 

@@ -4,6 +4,10 @@ export class UploadFileRo {
   @ApiProperty()
   location: string;
 }
+export class UploadFilesRo {
+  @ApiProperty()
+  locations: UploadFileRo[];
+}
 
 export class UploadCloud {
   asset_id: string;

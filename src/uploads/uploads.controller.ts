@@ -4,10 +4,9 @@ import {
   HttpStatus,
   Post,
   UseInterceptors,
-  UploadedFile,
-  Logger,
+  UploadedFiles,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiBody,
   ApiConsumes,
@@ -19,7 +18,7 @@ import {
 import { diskStorage } from 'multer';
 import Auth from 'src/auth/guards/auth.guard';
 import { UploadFileDto } from './types/dto/uploads.dto';
-import { UploadFileRo } from './types/ro/uploads.ro';
+import { UploadFileRo, UploadFilesRo } from './types/ro/uploads.ro';
 import { UploadsService } from './uploads.service';
 
 @ApiTags('uploads')
@@ -43,14 +42,16 @@ export class UploadsController {
   @HttpCode(HttpStatus.CREATED)
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
   @UseInterceptors(
-    FileInterceptor('file', {
+    FilesInterceptor('files', 2, {
       storage: diskStorage({
         destination: './dist/upls',
         filename: (_, file, cb) => cb(null, file.originalname),
       }),
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File): Promise<UploadFileRo> {
-    return this.uploadsService.upload(file);
+  uploadFile(
+    @UploadedFiles() files: Express.Multer.File[],
+  ): Promise<UploadFilesRo> {
+    return this.uploadsService.upload(files);
   }
 }
