@@ -5,17 +5,11 @@ export class AddBanner1642847174059 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "shots" ADD "picture_banner" character varying(300) NOT NULL`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "shots" ALTER COLUMN "picture_banner" SET DEFAULT ''`,
+      `ALTER TABLE "shots" ADD COLUMN "picture_banner" character varying(300) NOT NULL DEFAULT ''`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "shots" ALTER COLUMN "picture_banner" DROP DEFAULT`,
-    );
     await queryRunner.query(`ALTER TABLE "shots" DROP COLUMN "picture_banner"`);
   }
 }
