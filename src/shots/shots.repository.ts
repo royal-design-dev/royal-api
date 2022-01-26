@@ -20,4 +20,12 @@ export class ShotsRepository extends Repository<ShotEntity> {
 
     return (await builder.getManyAndCount()) as [ShotsRo[], number];
   }
+
+  async findOneById(id: string) {
+    const builder = this.createQueryBuilder(this.alias)
+      .where({ id })
+      .leftJoinAndSelect(`${this.alias}.categories`, 'categories');
+
+    return (await builder.getOneOrFail()) as ShotsRo;
+  }
 }

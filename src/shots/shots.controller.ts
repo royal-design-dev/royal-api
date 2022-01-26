@@ -7,8 +7,10 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -22,9 +24,10 @@ import {
 import Auth from 'src/auth/guards/auth.guard';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
+import { ShotsUpdateDto } from './types/dto/shots-update.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
 import { ShotsCreateRo } from './types/ro/shots-create.ro';
-import { ShotsListAndCountRo } from './types/ro/shots.ro';
+import { ShotsListAndCountRo, ShotsRo } from './types/ro/shots.ro';
 
 @ApiTags('shots')
 @Controller('shots')
@@ -78,6 +81,7 @@ export class ShotsController {
   })
   @ApiOkResponse({
     description: 'Successful operation',
+    type: ShotsRo,
   })
   @HttpCode(HttpStatus.OK)
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
@@ -100,5 +104,27 @@ export class ShotsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.shotsService.remove(id);
+  }
+
+  @Patch(':id')
+  @ApiOperation({
+    summary: 'Change Shot by id',
+  })
+  @ApiParam({
+    description: 'Id of shot to change',
+    name: 'id',
+  })
+  @ApiOkResponse({
+    description: 'Successful operation',
+    type: ShotsRo,
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  async change(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body(new ValidationPipe({ transform: true }))
+    updateShotDto: ShotsUpdateDto,
+  ) {
+    return await this.shotsService.change(id, updateShotDto);
   }
 }

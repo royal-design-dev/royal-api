@@ -18,7 +18,7 @@ import {
 import { diskStorage } from 'multer';
 import Auth from 'src/auth/guards/auth.guard';
 import { UploadFileDto } from './types/dto/uploads.dto';
-import { UploadFileRo, UploadFilesRo } from './types/ro/uploads.ro';
+import { UploadFilesRo } from './types/ro/uploads.ro';
 import { UploadsService } from './uploads.service';
 
 @ApiTags('uploads')
@@ -36,7 +36,7 @@ export class UploadsController {
   })
   @ApiCreatedResponse({
     description: 'Successful operation',
-    type: UploadFileRo,
+    type: UploadFilesRo,
   })
   @ApiConsumes('multipart/form-data')
   @HttpCode(HttpStatus.CREATED)
