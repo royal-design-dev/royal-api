@@ -21,10 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "./node_modules/typeorm/cli.js",
     "typeorm:ts": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "migration:generate": "yarn typeorm:ts migration:generate -n",
-    "migration:create": "yarn typeorm:ts migration:create -n",
-    "migration:run": "yarn typeorm:ts migration:run",
-    "migration:revert": "yarn typeorm:ts migration:revert"
+    "migration:generate": "npm run typeorm:ts migration:generate -n",
+    "migration:create": "npm run typeorm:ts migration:create -n",
+    "migration:run": "npm run typeorm:ts migration:run",
+    "migration:revert": "npm run typeorm:ts migration:revert"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.1",
