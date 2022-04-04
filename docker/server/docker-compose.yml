@@ -1,22 +1,4 @@
-version: '3.1'
-
 services:
-  db:
-    container_name: royal-postgres
-    image: postgres:13.1-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-      POSTGRES_DB: db
-    volumes:
-      - royal-postgres:/var/lib/postgresql/data
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
-    networks:
-      - royal-network
-    ports:
-      - 5432:5432
-
   backend_dev:
     container_name: royal_api_dev
     image: backend_dev:1.0.0
@@ -29,13 +11,10 @@ services:
     ports:
       - 5000:5000
       - 9229:9229
-    networks:
-      - royal-network
+    network_mode: "host"
     volumes:
       - ../:/home/node/app
       - /home/node/app/node_modules
-    depends_on:
-      - db
     stdin_open: true
     restart: unless-stopped
 
@@ -51,17 +30,9 @@ services:
     ports:
       - 5000:5000
       - 9229:9229
-    networks:
-      - royal-network
+    network_mode: "host"
     volumes:
       - ../:/home/node/app
       - /home/node/app/node_modules
-    depends_on:
-      - db
     stdin_open: true
     restart: unless-stopped
-
-volumes:
-  royal-postgres:
-networks:
-  royal-network:
