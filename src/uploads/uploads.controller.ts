@@ -15,6 +15,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Express } from 'express';
 import { diskStorage } from 'multer';
 import Auth from 'src/auth/guards/auth.guard';
 import { UploadFileDto } from './types/dto/uploads.dto';

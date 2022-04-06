@@ -7,4 +7,5 @@ export class ShotsCreateDto extends PickType(ShotsDto, [
   'shotUrl',
   'title',
   'categories',
+  'type',
 ]) {}

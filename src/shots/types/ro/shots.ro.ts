@@ -8,6 +8,7 @@ export class ShotsRo extends PickType(ShotsDto, [
   'shotUrl',
   'title',
   'categories',
+  'type',
 ]) {}
 
 export class ShotsListAndCountRo {

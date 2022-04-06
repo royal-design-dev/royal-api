@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Express } from 'express';
 import { ConfigService } from '@nestjs/config';
 
 import { v2 } from 'cloudinary';

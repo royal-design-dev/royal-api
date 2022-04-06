@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -7,6 +8,7 @@ import {
   Validate,
 } from 'class-validator';
 import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
+import { ShotsTypeEnum } from '../enums/shots';
 
 export class ShotsDto implements Readonly<ShotsDto> {
   @ApiProperty()
@@ -32,6 +34,16 @@ export class ShotsDto implements Readonly<ShotsDto> {
   @IsString()
   shotUrl: string;
 
+  @ApiProperty({
+    description: 'Filter from type shots',
+    enum: ShotsTypeEnum,
+    nullable: true,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(ShotsTypeEnum)
+  type: ShotsTypeEnum;
+
   @ApiProperty({ type: CategoriesCreateRo, isArray: true })
   categories: CategoriesCreateRo[];
 }
@@ -45,4 +57,13 @@ export class ShotsFilterDto {
   @IsOptional()
   @Validate(IsUUID, { each: true })
   categories: string[];
+
+  @ApiProperty({
+    enum: ShotsTypeEnum,
+    description: 'Filter from type shots',
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(ShotsTypeEnum)
+  type: ShotsTypeEnum;
 }
