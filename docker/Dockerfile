@@ -9,11 +9,12 @@ RUN npm ci --no-optional --ignore-scripts
 COPY ./ ./
 
 RUN npm run build
-RUN npm prune --production
 
 FROM node:14.19.0-alpine AS prod
 
 WORKDIR /home/node/app
+
+RUN npm prune --production
 
 COPY --from=dev --chown=root:root /home/node/app/node_modules ./node_modules
 COPY --from=dev --chown=root:root /home/node/app/dist ./dist
