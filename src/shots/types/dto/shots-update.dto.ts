@@ -11,12 +11,6 @@ export class ShotsUpdateDto {
   picture: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  @IsOptional()
-  picture_banner: string;
-
-  @ApiProperty()
   @IsString()
   @IsOptional()
   title: string;

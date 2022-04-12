@@ -27,9 +27,6 @@ export class ShotEntity {
   @Column({ type: 'varchar', length: 300 })
   picture: string;
 
-  @Column({ nullable: false, type: 'varchar', length: 300, default: '' })
-  picture_banner: string;
-
   @Column({
     type: 'enum',
     enum: ShotsTypeEnum,
