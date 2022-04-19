@@ -8,10 +8,12 @@ import { ShotsRo } from './types/ro/shots.ro';
 export class ShotsRepository extends Repository<ShotEntity> {
   private readonly alias = 'shots';
 
-  async findAllAndCount({ categories, type }: ShotsFilterDto) {
+  async findAllAndCount({ categories, type, offset, limit }: ShotsFilterDto) {
     const builder = this.createQueryBuilder(this.alias)
       .leftJoinAndSelect(`${this.alias}.categories`, 'categories')
       .where({ ...(type && { type }) })
+      .skip(offset)
+      .take(limit)
       .orderBy(`${this.alias}.created_at`, 'DESC');
 
     if (categories?.length)

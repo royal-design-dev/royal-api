@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  Min,
   Validate,
 } from 'class-validator';
 import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
@@ -61,4 +64,23 @@ export class ShotsFilterDto {
   @IsOptional()
   @IsEnum(ShotsTypeEnum)
   type: ShotsTypeEnum;
+
+  @ApiProperty({
+    description: 'Filter from offset',
+    required: false,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  offset?: number;
+
+  @ApiProperty({
+    description: 'Filter from limit',
+    required: false,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  limit?: number;
 }

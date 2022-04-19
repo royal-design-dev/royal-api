@@ -71,6 +71,23 @@ export class ShotsController {
     return { data, count };
   }
 
+  @Get('/filter')
+  @ApiOperation({
+    summary: 'Return list of shots with filter',
+  })
+  @ApiOkResponse({
+    description: 'Successful operation',
+    type: ShotsRo,
+    isArray: true,
+  })
+  @HttpCode(HttpStatus.OK)
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  async getAllWithFilter(@Query() filter: ShotsFilterDto): Promise<ShotsRo[]> {
+    const [data] = await this.shotsService.findAndCount(filter);
+
+    return data;
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get Shot by id',
