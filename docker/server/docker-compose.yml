@@ -5,17 +5,14 @@ services:
     container_name: royal_api_dev
     image: backend_dev:1.0.0
     build:
-      context: ../
+      context: ../../
       target: dev
       dockerfile: ./docker/Dockerfile
-    env_file: .env
+    env_file: ../.env
     command: npm run start:debug
-    ports:
-      - 5000:5000
-      - 9229:9229
-    network_mode: "host"
+    network_mode: 'host'
     volumes:
-      - ../:/home/node/app
+      - ../../:/home/node/app
       - /home/node/app/node_modules
     stdin_open: true
     restart: unless-stopped
@@ -24,15 +21,12 @@ services:
     container_name: royal_api_prod
     image: backend_prod:1.0.0
     build:
-      context: ../
+      context: ../../
       target: prod
       dockerfile: ./docker/Dockerfile
-    env_file: .env
+    env_file: ../.env
     command: npm run start:prod
-    ports:
-      - 5000:5000
-      - 9229:9229
-    network_mode: "host"
+    network_mode: 'host'
     volumes:
       - ../:/home/node/app
       - /home/node/app/node_modules
