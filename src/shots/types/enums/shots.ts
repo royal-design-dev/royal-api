@@ -1,4 +1,5 @@
 export enum ShotsTypeEnum {
-  'LIVE' = 'live',
+  'WORKING' = 'working',
+  'PAUSED' = 'paused',
   'COMPLETE' = 'complete',
 }

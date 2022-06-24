@@ -6,7 +6,8 @@ export class ShotsRo extends PickType(ShotsDto, [
   'picture',
   'shotUrl',
   'title',
-  'categories',
+  'price',
+  'service',
   'type',
 ]) {}
 

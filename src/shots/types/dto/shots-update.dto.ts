@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { ServicesCreateRo } from 'src/services/types/ro/services-create.ro';
 import { ShotsTypeEnum } from '../enums/shots';
 
 export class ShotsUpdateDto {
@@ -9,6 +15,12 @@ export class ShotsUpdateDto {
   @IsString()
   @IsOptional()
   picture: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  @IsOptional()
+  price: number;
 
   @ApiProperty()
   @IsString()
@@ -29,7 +41,7 @@ export class ShotsUpdateDto {
   @IsOptional()
   type: ShotsTypeEnum;
 
-  @ApiProperty({ type: CategoriesCreateRo, isArray: true })
+  @ApiProperty({ type: ServicesCreateRo, isArray: true })
   @IsOptional()
-  categories: CategoriesCreateRo[];
+  services: ServicesCreateRo[];
 }

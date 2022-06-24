@@ -10,7 +10,7 @@ import {
   Min,
   Validate,
 } from 'class-validator';
-import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
+import { ServicesCreateRo } from 'src/services/types/ro/services-create.ro';
 import { ShotsTypeEnum } from '../enums/shots';
 
 export class ShotsDto implements Readonly<ShotsDto> {
@@ -22,6 +22,11 @@ export class ShotsDto implements Readonly<ShotsDto> {
   @IsNotEmpty()
   @IsString()
   picture: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  price: number;
 
   @ApiProperty()
   @IsString()
@@ -42,19 +47,19 @@ export class ShotsDto implements Readonly<ShotsDto> {
   @IsEnum(ShotsTypeEnum)
   type: ShotsTypeEnum;
 
-  @ApiProperty({ type: CategoriesCreateRo, isArray: true })
-  categories: CategoriesCreateRo[];
+  @ApiProperty({ type: ServicesCreateRo })
+  service: ServicesCreateRo;
 }
 
 export class ShotsFilterDto {
   @ApiProperty({
     format: 'uuid',
-    description: 'Filter shots by categories uuids',
+    description: 'Filter shots by services uuids',
     required: false,
   })
   @IsOptional()
   @Validate(IsUUID, { each: true })
-  categories: string[];
+  services: string[];
 
   @ApiProperty({
     enum: ShotsTypeEnum,

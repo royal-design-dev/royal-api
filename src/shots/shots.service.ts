@@ -21,7 +21,7 @@ export class ShotsService {
   }
 
   async create(shot: ShotsCreateDto) {
-    const item = this.shotsRepository.create(shot);
+    const item = await this.shotsRepository.create(shot);
 
     return await this.shotsRepository.save(item);
   }

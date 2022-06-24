@@ -1,11 +1,9 @@
-import { CategoryEntity } from 'src/categories/entity/categories.entity';
-import { CategoriesCreateRo } from 'src/categories/types/ro/categories-create.ro';
+import { ServiceEntity } from 'src/services/entity/services.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ShotsTypeEnum } from '../types/enums/shots';
@@ -27,6 +25,9 @@ export class ShotEntity {
   @Column({ type: 'varchar', length: 300 })
   picture: string;
 
+  @Column({ type: 'integer', nullable: false, default: 0 })
+  price: number;
+
   @Column({
     type: 'enum',
     enum: ShotsTypeEnum,
@@ -34,7 +35,6 @@ export class ShotEntity {
   })
   type: ShotsTypeEnum;
 
-  @ManyToMany(() => CategoryEntity)
-  @JoinTable()
-  categories: CategoriesCreateRo[];
+  @ManyToOne(() => ServiceEntity, (service) => service.shots)
+  service: ServiceEntity;
 }

@@ -8,17 +8,17 @@ import { ShotsRo } from './types/ro/shots.ro';
 export class ShotsRepository extends Repository<ShotEntity> {
   private readonly alias = 'shots';
 
-  async findAllAndCount({ categories, type, offset, limit }: ShotsFilterDto) {
+  async findAllAndCount({ services, type, offset, limit }: ShotsFilterDto) {
     const builder = this.createQueryBuilder(this.alias)
-      .leftJoinAndSelect(`${this.alias}.categories`, 'categories')
+      .leftJoinAndSelect(`${this.alias}.service`, 'service')
       .where({ ...(type && { type }) })
       .skip(offset)
       .take(limit)
       .orderBy(`${this.alias}.created_at`, 'DESC');
 
-    if (categories?.length)
-      builder.andWhere('categories.name IN (:...categories)', {
-        categories: toArray(categories),
+    if (services?.length)
+      builder.andWhere('service.id IN (:...services)', {
+        services: toArray(services),
       });
 
     return (await builder.getManyAndCount()) as [ShotsRo[], number];
@@ -27,7 +27,7 @@ export class ShotsRepository extends Repository<ShotEntity> {
   async findOneById(id: string) {
     const builder = this.createQueryBuilder(this.alias)
       .where({ id })
-      .leftJoinAndSelect(`${this.alias}.categories`, 'categories');
+      .leftJoinAndSelect(`${this.alias}.services`, 'services');
 
     return (await builder.getOneOrFail()) as ShotsRo;
   }
