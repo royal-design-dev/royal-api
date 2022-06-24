@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   backend_dev:
-    container_name: royal_api_dev
+    container_name: uplix_api_dev
     image: backend_dev:1.0.0
     build:
       context: ../../
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   backend_prod:
-    container_name: royal_api_prod
+    container_name: uplix_api_prod
     image: backend_prod:1.0.0
     build:
       context: ../../

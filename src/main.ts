@@ -15,7 +15,7 @@ async function bootstrap() {
   );
 
   const swaggerOptions = new DocumentBuilder()
-    .setTitle('Royal api')
+    .setTitle('Uplix api')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

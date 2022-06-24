@@ -8,13 +8,13 @@ services:
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: db
     volumes:
-      - royal-postgres:/var/lib/postgresql/data
+      - uplix-postgres:/var/lib/postgresql/data
       - ./postgresql.conf:/etc/postgresql/postgresql.conf
     ports:
       - 5432:5432
 
   backend_dev:
-    container_name: royal_api_dev
+    container_name: uplix_api_dev
     image: backend_dev
     build:
       context: ../
@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
 
   backend_prod:
-    container_name: royal_api_prod
+    container_name: uplix_api_prod
     image: backend_prod
     build:
       context: ../
@@ -54,4 +54,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  royal-postgres:
+  uplix-postgres:
