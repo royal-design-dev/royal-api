@@ -1,5 +1,5 @@
-export enum ShotsTypeEnum {
-  'WORKING' = 'working',
-  'PAUSED' = 'paused',
-  'COMPLETE' = 'complete',
+export enum ShotsStatusEnum {
+  PAUSED,
+  WORKING,
+  COMPLETE,
 }

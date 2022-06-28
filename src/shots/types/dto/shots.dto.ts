@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
@@ -8,15 +8,27 @@ import {
   IsString,
   IsUUID,
   Min,
-  Validate,
 } from 'class-validator';
 import { ServicesCreateRo } from 'src/services/types/ro/services-create.ro';
-import { ShotsTypeEnum } from '../enums/shots';
+import { ServicesRo } from 'src/services/types/ro/services.ro';
+import { TypesRo } from 'src/types/types/ro/types.ro';
+import { UsersRo } from 'src/users/types/ro/users.ro';
+import { ShotsStatusEnum } from '../enums/shots';
 
 export class ShotsDto implements Readonly<ShotsDto> {
   @ApiProperty()
   @IsUUID()
   id: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  shotUrl: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -29,46 +41,60 @@ export class ShotsDto implements Readonly<ShotsDto> {
   price: number;
 
   @ApiProperty()
-  @IsString()
-  title: string;
-
-  @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  shotUrl: string;
+  @IsNumber()
+  count: number;
 
   @ApiProperty({
     description: 'Filter from type shots',
-    enum: ShotsTypeEnum,
+    enum: ShotsStatusEnum,
     nullable: true,
     required: false,
+    default: ShotsStatusEnum.WORKING,
   })
   @IsOptional()
-  @IsEnum(ShotsTypeEnum)
-  type: ShotsTypeEnum;
+  @IsEnum(ShotsStatusEnum)
+  status: ShotsStatusEnum;
 
-  @ApiProperty({ type: ServicesCreateRo })
-  service: ServicesCreateRo;
+  @ApiProperty({ type: PickType(ServicesRo, ['id']) })
+  service: Pick<ServicesCreateRo, 'id'>;
+
+  @ApiProperty({ type: PickType(TypesRo, ['id']) })
+  type: Pick<TypesRo, 'id'>;
+
+  @ApiProperty({ type: PickType(UsersRo, ['id']) })
+  user: Pick<UsersRo, 'id'>;
 }
 
 export class ShotsFilterDto {
   @ApiProperty({
-    format: 'uuid',
-    description: 'Filter shots by services uuids',
+    description: 'Filter shots by statuses enum',
     required: false,
+    isArray: true,
+    type: 'enum',
+    enum: ShotsStatusEnum,
   })
+  @IsEnum(ShotsStatusEnum)
   @IsOptional()
-  @Validate(IsUUID, { each: true })
+  statuses: string[];
+
+  @ApiProperty({
+    description: 'Filter shots by services slugs',
+    required: false,
+    isArray: true,
+  })
+  @IsString()
+  @IsOptional()
   services: string[];
 
   @ApiProperty({
-    enum: ShotsTypeEnum,
-    description: 'Filter from type shots',
+    description: 'Filter shots by types slugs',
     required: false,
+    isArray: true,
   })
+  @IsString()
   @IsOptional()
-  @IsEnum(ShotsTypeEnum)
-  type: ShotsTypeEnum;
+  types: string[];
 
   @ApiProperty({
     description: 'Filter from offset',

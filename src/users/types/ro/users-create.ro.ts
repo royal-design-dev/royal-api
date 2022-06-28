@@ -1,4 +1,4 @@
 import { PickType } from '@nestjs/swagger';
-import { UsersDto } from '../dto/users.dto';
+import { UsersRo } from './users.ro';
 
-export class UsersCreateRo extends PickType(UsersDto, ['id', 'login']) {}
+export class UsersCreateRo extends PickType(UsersRo, ['id', 'login']) {}

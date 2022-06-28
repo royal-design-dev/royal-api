@@ -1,8 +1,16 @@
-import { PickType } from '@nestjs/swagger';
-import { ServicesCreateRo } from './services-create.ro';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsUUID } from 'class-validator';
 
-export class ServicesRo extends PickType(ServicesCreateRo, [
-  'id',
-  'name',
-  'slug',
-]) {}
+export class ServicesRo implements Readonly<ServicesRo> {
+  @ApiProperty()
+  @IsUUID()
+  id: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  slug: string;
+}

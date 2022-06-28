@@ -1,16 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
+import { ServicesRo } from './services.ro';
 
-export class ServicesCreateRo implements Readonly<ServicesCreateRo> {
-  @ApiProperty()
-  @IsUUID()
-  id: string;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  slug: string;
-}
+export class ServicesCreateRo extends ServicesRo {}

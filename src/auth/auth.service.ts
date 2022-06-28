@@ -23,6 +23,8 @@ export class AuthService {
       login: user.login,
     });
 
+    await this.tokenService.deleteRefreshTokens(accessToken);
+
     const refreshToken = await this.tokenService.createRefreshToken({
       userId: String(user.id),
     });

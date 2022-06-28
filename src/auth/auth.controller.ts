@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -22,8 +21,6 @@ import { TokenService } from './token.service';
 import { LoginUserDto } from './types/dto/login-user.dto';
 import { RefreshTokensDto } from './types/dto/refresh-tokens.dto';
 import { LoginRo } from './types/ro/login.ro';
-
-import pup from 'puppeteer';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -111,59 +108,59 @@ export class AuthController {
   //   return true;
   // }
 
-  @Get('check-post')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({
-    description: 'Checked',
-  })
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  public async connectDribbble(
-    @Body(new ValidationPipe()) body: any,
-  ): Promise<string> {
-    const page = async () => {
-      // const browser = await pup.launch({
-      //   headless: false,
-      // });
-      // const context = await browser.createIncognitoBrowserContext();
-      // const page = await context.newPage();
+  // @Get('check-post')
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOkResponse({
+  //   description: 'Checked',
+  // })
+  // @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  // public async connectDribbble(
+  //   @Body(new ValidationPipe()) body: any,
+  // ): Promise<string> {
+  //   const page = async () => {
+  //     // const browser = await pup.launch({
+  //     //   headless: false,
+  //     // });
+  //     // const context = await browser.createIncognitoBrowserContext();
+  //     // const page = await context.newPage();
 
-      // // await page(
-      // //   'Googlebot/2.1 (+http://www.googlebot.com/bot.html)',
-      // // );
+  //     // // await page(
+  //     // //   'Googlebot/2.1 (+http://www.googlebot.com/bot.html)',
+  //     // // );
 
-      // await page.goto(
-      //   'https://dribbble.com/shots/18147424-WinWin-Online-Casino-Landing-Page',
-      // );
+  //     // await page.goto(
+  //     //   'https://dribbble.com/shots/18147424-WinWin-Online-Casino-Landing-Page',
+  //     // );
 
-      // // await page.screenshot({ path: 'example.png' });
+  //     // // await page.screenshot({ path: 'example.png' });
 
-      // await context.close();
+  //     // await context.close();
 
-      const browser = await pup.launch({
-        headless: false,
-      });
-      const context = await browser.createIncognitoBrowserContext();
-      const page = await context.newPage();
-      page.setJavaScriptEnabled(false);
+  //     const browser = await pup.launch({
+  //       headless: false,
+  //     });
+  //     const context = await browser.createIncognitoBrowserContext();
+  //     const page = await context.newPage();
+  //     page.setJavaScriptEnabled(false);
 
-      page.setUserAgent(
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
-      );
+  //     page.setUserAgent(
+  //       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+  //     );
 
-      await page.goto(
-        'https://dribbble.com/shots/18147424-WinWin-Online-Casino-Landing-Page',
-      );
-      await page.waitForTimeout(5000);
+  //     await page.goto(
+  //       'https://dribbble.com/shots/18147424-WinWin-Online-Casino-Landing-Page',
+  //     );
+  //     await page.waitForTimeout(5000);
 
-      await page.mouse.wheel({ deltaY: 1000 });
+  //     await page.mouse.wheel({ deltaY: 1000 });
 
-      await page.waitForTimeout(2000);
+  //     await page.waitForTimeout(2000);
 
-      await context.close();
-    };
+  //     await context.close();
+  //   };
 
-    await page();
+  //   await page();
 
-    return `https://dribbble.com/oauth/authorize?scope=public+write+upload`;
-  }
+  //   return `https://dribbble.com/oauth/authorize?scope=public+write+upload`;
+  // }
 }

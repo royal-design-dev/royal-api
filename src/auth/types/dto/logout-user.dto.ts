@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
 
-import { IsBoolean, IsOptional, IsString } from 'class-validator'
-import { Transform } from 'class-transformer'
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class LogoutUserDto {
   @ApiProperty()
   @IsString()
-  refresh_token: string
+  refresh_token: string;
 
   @Transform(({ value }) => value === 'true')
   @IsOptional()
@@ -16,5 +16,5 @@ export class LogoutUserDto {
     name: 'all',
     required: false,
   })
-  all: boolean
+  all: boolean;
 }

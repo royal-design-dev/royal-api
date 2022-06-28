@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { ServiceEntity } from './entity/services.entity';
+import { ServicesEntity } from './entity/services.entity';
 
-@EntityRepository(ServiceEntity)
-export class ServicesRepository extends Repository<ServiceEntity> {
+@EntityRepository(ServicesEntity)
+export class ServicesRepository extends Repository<ServicesEntity> {
   private readonly alias = 'services';
 }

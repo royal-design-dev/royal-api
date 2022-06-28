@@ -1,4 +1,12 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -6,6 +14,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Request } from 'express';
 import Auth from 'src/auth/guards/auth.guard';
 import { UsersCreateDto } from './types/dto/users-create.dto';
 import { UsersCreateRo } from './types/ro/users-create.ro';
@@ -33,5 +42,18 @@ export class UsersController {
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
   create(@Body() userDto: UsersCreateDto) {
     return this.usersService.create(userDto);
+  }
+
+  @Post('info')
+  @Auth()
+  @ApiOperation({
+    summary: 'Get user info',
+  })
+  @HttpCode(HttpStatus.CREATED)
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  public async get(@Req() req: Request) {
+    const { userId } = req.user as { userId: string };
+
+    return await this.usersService.findAllInfo(userId);
   }
 }

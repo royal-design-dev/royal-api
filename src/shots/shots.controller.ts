@@ -24,7 +24,6 @@ import {
 import Auth from 'src/auth/guards/auth.guard';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
-import { ShotsUpdateDto } from './types/dto/shots-update.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
 import { ShotsCreateRo } from './types/ro/shots-create.ro';
 import { ShotsListAndCountRo, ShotsRo } from './types/ro/shots.ro';
@@ -71,23 +70,6 @@ export class ShotsController {
     return { data, count };
   }
 
-  @Get('/filter')
-  @ApiOperation({
-    summary: 'Return list of shots with filter',
-  })
-  @ApiOkResponse({
-    description: 'Successful operation',
-    type: ShotsRo,
-    isArray: true,
-  })
-  @HttpCode(HttpStatus.OK)
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  async getAllWithFilter(@Query() filter: ShotsFilterDto): Promise<ShotsRo[]> {
-    const [data] = await this.shotsService.findAndCount(filter);
-
-    return data;
-  }
-
   @Get(':id')
   @ApiOperation({
     summary: 'Get Shot by id',
@@ -123,25 +105,25 @@ export class ShotsController {
     return await this.shotsService.remove(id);
   }
 
-  @Patch(':id')
-  @ApiOperation({
-    summary: 'Change Shot by id',
-  })
-  @ApiParam({
-    description: 'Id of shot to change',
-    name: 'id',
-  })
-  @ApiOkResponse({
-    description: 'Successful operation',
-    type: ShotsRo,
-  })
-  @HttpCode(HttpStatus.OK)
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  async change(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body(new ValidationPipe({ transform: true }))
-    updateShotDto: ShotsUpdateDto,
-  ) {
-    return await this.shotsService.change(id, updateShotDto);
-  }
+  // @Patch(':id')
+  // @ApiOperation({
+  //   summary: 'Change Shot by id',
+  // })
+  // @ApiParam({
+  //   description: 'Id of shot to change',
+  //   name: 'id',
+  // })
+  // @ApiOkResponse({
+  //   description: 'Successful operation',
+  //   type: ShotsRo,
+  // })
+  // @HttpCode(HttpStatus.OK)
+  // @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  // async change(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body(new ValidationPipe({ transform: true }))
+  //   updateShotDto: ShotsUpdateDto,
+  // ) {
+  //   return await this.shotsService.change(id, updateShotDto);
+  // }
 }

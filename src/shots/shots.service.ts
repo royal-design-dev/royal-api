@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ShotsRepository } from './shots.repository';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
-import { ShotsUpdateDto } from './types/dto/shots-update.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
 
 @Injectable()
@@ -33,13 +32,13 @@ export class ShotsService {
       throw new NotFoundException(`Shot with id ${id} not found`);
   }
 
-  async change(id: string, updateShotDto: ShotsUpdateDto) {
-    try {
-      await this.shotsRepository.save({ id, ...updateShotDto });
+  // async change(id: string, updateShotDto: ShotsUpdateDto) {
+  //   try {
+  //     await this.shotsRepository.save({ id, ...updateShotDto });
 
-      return await this.findById(id);
-    } catch (error) {
-      throw new NotFoundException(error);
-    }
-  }
+  //     return await this.findById(id);
+  //   } catch (error) {
+  //     throw new NotFoundException(error);
+  //   }
+  // }
 }

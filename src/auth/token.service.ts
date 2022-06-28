@@ -36,6 +36,8 @@ export class TokenService {
         token: oldRefreshToken,
       });
 
+      await this.refreshTokenRepository.delete({ userId: token.userId });
+
       if (!token) {
         throw new NotFoundException('Refresh token not found');
       }
@@ -54,8 +56,6 @@ export class TokenService {
         sub: token.userId,
         login: user.login,
       });
-
-      await this.refreshTokenRepository.delete({ userId: token.userId });
 
       const refreshToken = await this.createRefreshToken({
         userId: token.userId,

@@ -1,8 +1,10 @@
-import { ShotEntity } from 'src/shots/entity/shots.entity';
+import { BindsEntity } from 'src/binds/entity/binds.entity';
+import { ShotsEntity } from 'src/shots/entity/shots.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ServicesStatusEnum } from '../types/enums/shots';
 
 @Entity('services')
-export class ServiceEntity {
+export class ServicesEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -12,8 +14,20 @@ export class ServiceEntity {
   @Column({ type: 'varchar', length: 300 })
   slug: string;
 
-  @OneToMany(() => ShotEntity, (shot) => shot.service, {
+  @Column({
+    type: 'enum',
+    enum: ServicesStatusEnum,
+    default: ServicesStatusEnum.ACTIVE,
+  })
+  status: ServicesStatusEnum;
+
+  @OneToMany(() => ShotsEntity, (shot) => shot.service, {
     cascade: true,
   })
-  shots: ShotEntity[];
+  shots: ShotsEntity[];
+
+  @OneToMany(() => BindsEntity, (bind) => bind.service, {
+    cascade: true,
+  })
+  binds: BindsEntity[];
 }

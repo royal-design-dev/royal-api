@@ -1,4 +1,6 @@
-import { ServiceEntity } from 'src/services/entity/services.entity';
+import { ServicesEntity } from 'src/services/entity/services.entity';
+import { TypesEntity } from 'src/types/entity/types.entity';
+import { UsersEntity } from 'src/users/entity/users.entity';
 import {
   Column,
   CreateDateColumn,
@@ -6,10 +8,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ShotsTypeEnum } from '../types/enums/shots';
+import { ShotsStatusEnum } from '../types/enums/shots';
 
 @Entity('shots')
-export class ShotEntity {
+export class ShotsEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -28,13 +30,25 @@ export class ShotEntity {
   @Column({ type: 'integer', nullable: false, default: 0 })
   price: number;
 
+  @Column({ type: 'integer', nullable: false, default: 0 })
+  count: number;
+
+  @Column({ type: 'integer', nullable: false, default: 0 })
+  executions: number;
+
   @Column({
     type: 'enum',
-    enum: ShotsTypeEnum,
-    default: ShotsTypeEnum.COMPLETE,
+    enum: ShotsStatusEnum,
+    default: ShotsStatusEnum.WORKING,
   })
-  type: ShotsTypeEnum;
+  status: ShotsStatusEnum;
 
-  @ManyToOne(() => ServiceEntity, (service) => service.shots)
-  service: ServiceEntity;
+  @ManyToOne(() => ServicesEntity, (service) => service.shots)
+  service: ServicesEntity;
+
+  @ManyToOne(() => TypesEntity, (type) => type.shots)
+  type: TypesEntity;
+
+  @ManyToOne(() => UsersEntity, (user) => user.shots)
+  user: UsersEntity;
 }

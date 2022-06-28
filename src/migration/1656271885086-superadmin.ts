@@ -3,8 +3,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 import { hash } from 'bcryptjs';
 import { UsersEntity } from 'src/users/entity/users.entity';
 
-export class superadmin1655929364812 implements MigrationInterface {
-  name = 'superadmin1655929364812';
+export class superadmin1656271885086 implements MigrationInterface {
+  name = 'superadmin1656271885086';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager.insert(UsersEntity, {
