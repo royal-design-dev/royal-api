@@ -14,6 +14,9 @@ export class ServicesEntity {
   @Column({ type: 'varchar', length: 300 })
   slug: string;
 
+  @Column({ type: 'varchar', length: 300, default: '' })
+  authLink: string;
+
   @Column({
     type: 'enum',
     enum: ServicesStatusEnum,

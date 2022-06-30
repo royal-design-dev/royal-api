@@ -1,29 +1,31 @@
-import { HttpException, Injectable } from '@nestjs/common';
-
 import { HttpService } from '@nestjs/axios';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DribbbleUserRo } from './types/ro/dribbble-token.ro';
+
 import { catchError } from 'rxjs';
-import { DribbbleUserRo } from './types/ro/dribbble-user.ro';
-import { BindsService } from 'src/binds/binds.service';
+import { BindsDto } from './types/dto/binds.dto';
 
 @Injectable()
 export class DribbbleService {
   constructor(
-    private readonly httpService: HttpService,
     private readonly configService: ConfigService,
-    private readonly bindsService: BindsService,
+    private readonly httpService: HttpService,
   ) {}
 
-  async authDribbble(code: string, serviceId: string) {
+  getToken = async (code: string, serviceSlug: string) => {
     const client_id = this.configService.get('CLIENT_ID');
     const client_secret = this.configService.get('CLIENT_SECRET');
+    const DRIBBBLE_REDIRECT_URL = this.configService.get(
+      'DRIBBBLE_REDIRECT_URL',
+    );
 
     const { data } = await this.httpService
       .post<DribbbleUserRo>('https://dribbble.com/oauth/token', {
         client_id,
         client_secret,
         code,
-        redirect_uri: `http://localhost:5000/api?service=${serviceId}`,
+        redirect_uri: `${DRIBBBLE_REDIRECT_URL}${serviceSlug}`,
       })
       .pipe(
         catchError((e) => {
@@ -34,13 +36,13 @@ export class DribbbleService {
       .toPromise();
 
     return data;
-  }
+  };
 
-  async authDribbbleByUser(
+  getDtoObject = async (
     userId: string,
     access_token: string,
-    service: string,
-  ) {
+    serviceId: string,
+  ): Promise<BindsDto> => {
     const {
       data: { name },
     } = await this.httpService
@@ -52,11 +54,11 @@ export class DribbbleService {
       )
       .toPromise();
 
-    return await this.bindsService.create({
+    return {
       name,
       token: access_token,
-      service: { id: service },
+      service: { id: serviceId },
       user: { id: userId },
-    });
-  }
+    };
+  };
 }

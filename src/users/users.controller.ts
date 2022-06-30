@@ -6,6 +6,7 @@ import {
   Post,
   Req,
   Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -40,7 +41,7 @@ export class UsersController {
   })
   @HttpCode(HttpStatus.CREATED)
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  create(@Body() userDto: UsersCreateDto) {
+  create(@Body(new ValidationPipe()) userDto: UsersCreateDto) {
     return this.usersService.create(userDto);
   }
 

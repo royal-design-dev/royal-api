@@ -1,5 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { ServicesStatusEnum } from '../enums/shots';
 
 export class ServicesRo implements Readonly<ServicesRo> {
   @ApiProperty()
@@ -13,4 +14,19 @@ export class ServicesRo implements Readonly<ServicesRo> {
   @ApiProperty()
   @IsString()
   slug: string;
+
+  @ApiHideProperty()
+  @IsString()
+  authLink: string;
+
+  @ApiProperty({
+    description: 'Status service',
+    enum: ServicesStatusEnum,
+    nullable: true,
+    required: false,
+    default: ServicesStatusEnum.ACTIVE,
+  })
+  @IsOptional()
+  @IsEnum(ServicesStatusEnum)
+  status: ServicesStatusEnum;
 }

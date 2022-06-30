@@ -7,9 +7,9 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
   Query,
+  Req,
   ValidationPipe,
 } from '@nestjs/common';
 import {
@@ -21,6 +21,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { Request } from 'express';
 import Auth from 'src/auth/guards/auth.guard';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
@@ -30,6 +31,7 @@ import { ShotsListAndCountRo, ShotsRo } from './types/ro/shots.ro';
 
 @ApiTags('shots')
 @Controller('shots')
+@ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
 export class ShotsController {
   constructor(private readonly shotsService: ShotsService) {}
 
@@ -47,9 +49,13 @@ export class ShotsController {
     type: ShotsCreateRo,
   })
   @HttpCode(HttpStatus.CREATED)
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  async create(@Body() shotDto: ShotsCreateDto) {
-    return await this.shotsService.create(shotDto);
+  async create(
+    @Body(new ValidationPipe()) shotDto: ShotsCreateDto,
+    @Req() req: Request,
+  ) {
+    const { userId } = req.user as { userId: string };
+
+    return await this.shotsService.create({ ...shotDto, user: { id: userId } });
   }
 
   @Get()
@@ -61,7 +67,6 @@ export class ShotsController {
     type: ShotsListAndCountRo,
   })
   @HttpCode(HttpStatus.OK)
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
   async getAllAndCount(
     @Query() filter: ShotsFilterDto,
   ): Promise<ShotsListAndCountRo> {
@@ -83,7 +88,6 @@ export class ShotsController {
     type: ShotsRo,
   })
   @HttpCode(HttpStatus.OK)
-  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
   async getById(@Param('id', ParseUUIDPipe) id: string) {
     return await this.shotsService.findById(id);
   }

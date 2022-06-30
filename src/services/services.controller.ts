@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -40,7 +41,7 @@ export class ServicesController {
   })
   @HttpCode(HttpStatus.CREATED)
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  async create(@Body() service: ServicesCreateDto) {
+  async create(@Body(new ValidationPipe()) service: ServicesCreateDto) {
     return await this.servicesService.create(service);
   }
 

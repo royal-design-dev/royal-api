@@ -1,4 +1,4 @@
 import { PickType } from '@nestjs/swagger';
 import { BindsRo } from './binds.ro';
 
-export class BindsCreateRo extends PickType(BindsRo, ['name', 'service']) {}
+export class BindsListRo extends PickType(BindsRo, ['id', 'name', 'service']) {}

@@ -61,9 +61,6 @@ export class ShotsDto implements Readonly<ShotsDto> {
 
   @ApiProperty({ type: PickType(TypesRo, ['id']) })
   type: Pick<TypesRo, 'id'>;
-
-  @ApiProperty({ type: PickType(UsersRo, ['id']) })
-  user: Pick<UsersRo, 'id'>;
 }
 
 export class ShotsFilterDto {

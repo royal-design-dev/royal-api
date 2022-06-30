@@ -7,7 +7,6 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypesModule } from './types/types.module';
 import { BindsModule } from './binds/binds.module';
-import { DribbbleModule } from './binds/modules/dribbble/dribbble.module';
 
 @Module({
   imports: [
@@ -16,7 +15,6 @@ import { DribbbleModule } from './binds/modules/dribbble/dribbble.module';
     TypesModule,
     ShotsModule,
     BindsModule,
-    DribbbleModule,
     ShotsModule,
     ServicesModule,
     AuthModule,

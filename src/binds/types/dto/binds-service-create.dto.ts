@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 import { IsString } from 'class-validator';
 
-export class DribbbleUserDto {
+export class BindsServiceCreateDto implements Readonly<BindsServiceCreateDto> {
   @ApiProperty()
   @IsString()
   code: string;
