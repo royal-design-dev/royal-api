@@ -1,5 +1,5 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsString, IsUUID } from 'class-validator';
 import { ServicesStatusEnum } from '../enums/shots';
 
 export class ServicesRo implements Readonly<ServicesRo> {
@@ -26,7 +26,6 @@ export class ServicesRo implements Readonly<ServicesRo> {
     required: false,
     default: ServicesStatusEnum.ACTIVE,
   })
-  @IsOptional()
   @IsEnum(ServicesStatusEnum)
   status: ServicesStatusEnum;
 }

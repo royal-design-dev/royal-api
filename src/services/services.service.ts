@@ -15,23 +15,45 @@ export class ServicesService {
   ) {}
 
   create = async (service: ServicesCreateDto) => {
-    const client_id = this.configService.get('CLIENT_ID');
-    const DRIBBBLE_REDIRECT_URL = this.configService.get(
-      'DRIBBBLE_REDIRECT_URL',
-    );
-
-    const authLink = `https://dribbble.com/oauth/authorize?${stringify({
-      client_id,
-      redirect_uri: `${DRIBBBLE_REDIRECT_URL}${service.slug}`,
-    })}&scope=public+write+upload`;
+    const authLink = this.getAuthLinkByService(service.slug);
 
     const item = this.servicesRepository.create({ ...service, authLink });
 
     return await this.servicesRepository.save(item);
   };
 
-  findAll = async () => await this.servicesRepository.findAllAndCount();
+  findAll = async () => await this.servicesRepository.findAll();
 
   findBySlug = async (slug: string) =>
     await this.servicesRepository.findOneOrFail({ slug });
+
+  getAuthLinkByService = (serviceSlug: string) => {
+    const DRIBBBLE_CLIENT_ID = this.configService.get('DRIBBBLE_CLIENT_ID');
+    const DRIBBBLE_REDIRECT_URL = this.configService.get(
+      'DRIBBBLE_REDIRECT_URL',
+    );
+
+    const FIGMA_CLIENT_ID = this.configService.get('FIGMA_CLIENT_ID');
+    const FIGMA_REDIRECT_URL = this.configService.get('FIGMA_REDIRECT_URL');
+
+    switch (serviceSlug) {
+      case 'figma':
+        return `https://www.figma.com/oauth?${stringify({
+          client_id: FIGMA_CLIENT_ID,
+          redirect_uri: `${FIGMA_REDIRECT_URL}${serviceSlug}`,
+        })}&scope=file_read`;
+
+      case 'dribbble':
+        return `https://dribbble.com/oauth/authorize?${stringify({
+          client_id: DRIBBBLE_CLIENT_ID,
+          redirect_uri: `${DRIBBBLE_REDIRECT_URL}${serviceSlug}`,
+        })}&scope=public+write+upload`;
+
+      default:
+        return `https://dribbble.com/oauth/authorize?${stringify({
+          client_id: DRIBBBLE_CLIENT_ID,
+          redirect_uri: `${DRIBBBLE_REDIRECT_URL}${serviceSlug}`,
+        })}&scope=public+write+upload`;
+    }
+  };
 }

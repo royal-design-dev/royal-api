@@ -5,7 +5,7 @@ import { ServicesEntity } from './entity/services.entity';
 export class ServicesRepository extends Repository<ServicesEntity> {
   private readonly alias = 'services';
 
-  async findAllAndCount() {
+  async findAll() {
     const builder = this.createQueryBuilder(this.alias).select([
       'services.id',
       'services.name',

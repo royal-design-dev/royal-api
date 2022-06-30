@@ -14,16 +14,18 @@ export class DribbbleService {
   ) {}
 
   getToken = async (code: string, serviceSlug: string) => {
-    const client_id = this.configService.get('CLIENT_ID');
-    const client_secret = this.configService.get('CLIENT_SECRET');
+    const DRIBBBLE_CLIENT_ID = this.configService.get('DRIBBBLE_CLIENT_ID');
+    const DRIBBBLE_CLIENT_SECRET = this.configService.get(
+      'DRIBBBLE_CLIENT_SECRET',
+    );
     const DRIBBBLE_REDIRECT_URL = this.configService.get(
       'DRIBBBLE_REDIRECT_URL',
     );
 
     const { data } = await this.httpService
       .post<DribbbleUserRo>('https://dribbble.com/oauth/token', {
-        client_id,
-        client_secret,
+        DRIBBBLE_CLIENT_ID,
+        DRIBBBLE_CLIENT_SECRET,
         code,
         redirect_uri: `${DRIBBBLE_REDIRECT_URL}${serviceSlug}`,
       })

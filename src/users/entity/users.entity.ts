@@ -28,6 +28,9 @@ export class UsersEntity {
   @Column({ type: 'varchar', length: 300, default: '' })
   picture: string;
 
+  @Column({ type: 'integer', nullable: false, default: 0 })
+  balance: number;
+
   @OneToMany(
     () => RefreshToken,
     (refreshToken: RefreshToken) => refreshToken.user,
@@ -40,12 +43,12 @@ export class UsersEntity {
   @OneToMany(() => ShotsEntity, (shot) => shot.user, {
     cascade: true,
   })
-  shots: ShotsEntity;
+  shots: ShotsEntity[];
 
   @OneToMany(() => BindsEntity, (bind) => bind.user, {
     cascade: true,
   })
-  binds: BindsEntity;
+  binds: BindsEntity[];
 
   @BeforeInsert()
   @BeforeUpdate()

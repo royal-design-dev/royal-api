@@ -16,6 +16,7 @@ export class UsersRepository extends Repository<UsersEntity> {
         'users.id',
         'users.login',
         'users.picture',
+        'users.balance',
         'binds.name',
         'service',
       ]);
