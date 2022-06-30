@@ -21,6 +21,6 @@ export class UsersRepository extends Repository<UsersEntity> {
         'service',
       ]);
 
-    return await builder.getMany();
+    return await builder.getOne();
   }
 }
