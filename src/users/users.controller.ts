@@ -27,7 +27,6 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @Auth()
   @ApiOperation({
     summary: 'Create user',
   })
