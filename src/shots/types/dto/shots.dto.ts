@@ -12,7 +12,6 @@ import {
 import { ServicesCreateRo } from 'src/services/types/ro/services-create.ro';
 import { ServicesRo } from 'src/services/types/ro/services.ro';
 import { TypesRo } from 'src/types/types/ro/types.ro';
-import { UsersRo } from 'src/users/types/ro/users.ro';
 import { ShotsStatusEnum } from '../enums/shots';
 
 export class ShotsDto implements Readonly<ShotsDto> {
@@ -29,11 +28,6 @@ export class ShotsDto implements Readonly<ShotsDto> {
   @IsNotEmpty()
   @IsString()
   shotUrl: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  picture: string;
 
   @ApiProperty()
   @IsNotEmpty()

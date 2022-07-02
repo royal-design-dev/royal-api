@@ -59,6 +59,7 @@ export class BindsService {
       .select([
         'binds.id',
         'binds.name',
+        'binds.picture',
         'service.id',
         'service.name',
         'service.slug',

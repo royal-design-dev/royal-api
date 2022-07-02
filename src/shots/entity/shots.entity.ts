@@ -24,9 +24,6 @@ export class ShotsEntity {
   @CreateDateColumn()
   created_at: Date;
 
-  @Column({ type: 'varchar', length: 300 })
-  picture: string;
-
   @Column({ type: 'integer', nullable: false, default: 0 })
   price: number;
 

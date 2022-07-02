@@ -12,6 +12,7 @@ export class BindsRepository extends Repository<BindsEntity> {
       .select([
         `${this.alias}.id`,
         `${this.alias}.name`,
+        `${this.alias}.picture`,
         'service.id',
         'service.name',
         'service.slug',

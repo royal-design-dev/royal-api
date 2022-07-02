@@ -1,4 +1,4 @@
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, IsUUID } from 'class-validator';
 import { BindsEntity } from 'src/binds/entity/binds.entity';
 import { ShotsEntity } from 'src/shots/entity/shots.entity';
@@ -11,10 +11,6 @@ export class UsersRo implements Readonly<UsersRo> {
   @ApiProperty()
   @IsString()
   login: string;
-
-  @ApiProperty()
-  @IsString()
-  picture: string;
 
   @ApiProperty()
   @IsNumber()

@@ -15,9 +15,9 @@ export class UsersRepository extends Repository<UsersEntity> {
       .select([
         'users.id',
         'users.login',
-        'users.picture',
         'users.balance',
         'binds.name',
+        'binds.picture',
         'service',
       ]);
 

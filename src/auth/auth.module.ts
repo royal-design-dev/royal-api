@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,7 +11,6 @@ import { TokenService } from './token.service';
 
 @Module({
   imports: [
-    UsersModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
@@ -25,6 +24,7 @@ import { TokenService } from './token.service';
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([RefreshToken]),
+    forwardRef(() => UsersModule),
   ],
   controllers: [AuthController],
   providers: [AuthService, ConfigService, JwtStrategy, TokenService],

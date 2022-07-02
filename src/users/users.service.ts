@@ -1,5 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthService } from 'src/auth/auth.service';
 import { LoginUserDto } from 'src/auth/types/dto/login-user.dto';
 import { UsersEntity } from 'src/users/entity/users.entity';
 import { UsersCreateDto } from './types/dto/users-create.dto';
@@ -10,6 +16,8 @@ export class UsersService {
   constructor(
     @InjectRepository(UsersRepository)
     private readonly usersRepository: UsersRepository,
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
   ) {}
 
   async create(user: UsersCreateDto) {
@@ -24,7 +32,10 @@ export class UsersService {
 
     const createUser = await this.usersRepository.save(item);
 
-    return await this.usersRepository.findAllInfo(createUser.id);
+    const tokens = await this.authService.login(user);
+    const newUser = await this.usersRepository.findAllInfo(createUser.id);
+
+    return { ...newUser, tokens };
   }
 
   async login(userDto: LoginUserDto): Promise<UsersEntity> {

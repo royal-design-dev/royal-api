@@ -46,7 +46,7 @@ export class DribbbleService {
     serviceId: string,
   ): Promise<BindsDto> => {
     const {
-      data: { name },
+      data: { name, avatar_url },
     } = await this.httpService
       .get('https://api.dribbble.com/v2/user', { params: { access_token } })
       .pipe(
@@ -58,6 +58,7 @@ export class DribbbleService {
 
     return {
       name,
+      picture: avatar_url,
       token: access_token,
       service: { id: serviceId },
       user: { id: userId },

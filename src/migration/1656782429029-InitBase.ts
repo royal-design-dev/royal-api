@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class InitBase1656670849535 implements MigrationInterface {
-  name = 'InitBase1656670849535';
+export class InitBase1656782429029 implements MigrationInterface {
+  name = 'InitBase1656782429029';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "binds" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "token" character varying(300) NOT NULL, "name" character varying(300) NOT NULL DEFAULT '', "userId" uuid, "serviceId" uuid, CONSTRAINT "PK_1f1e31dd0b870446e3adf632149" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "binds" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "token" character varying(300) NOT NULL, "name" character varying(300) NOT NULL DEFAULT '', "picture" character varying(300) NOT NULL DEFAULT '', "userId" uuid, "serviceId" uuid, CONSTRAINT "PK_1f1e31dd0b870446e3adf632149" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TYPE "public"."services_status_enum" AS ENUM('0', '1')`,
@@ -20,10 +20,10 @@ export class InitBase1656670849535 implements MigrationInterface {
       `CREATE TYPE "public"."shots_status_enum" AS ENUM('0', '1', '2')`,
     );
     await queryRunner.query(
-      `CREATE TABLE "shots" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying(300) NOT NULL, "shotUrl" character varying(300) NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "picture" character varying(300) NOT NULL, "price" integer NOT NULL DEFAULT '0', "count" integer NOT NULL DEFAULT '0', "executions" integer NOT NULL DEFAULT '0', "status" "public"."shots_status_enum" NOT NULL DEFAULT '1', "serviceId" uuid, "typeId" uuid, "userId" uuid, CONSTRAINT "PK_40b52561334dcee2a4421b371d7" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "shots" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying(300) NOT NULL, "shotUrl" character varying(300) NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "price" integer NOT NULL DEFAULT '0', "count" integer NOT NULL DEFAULT '0', "executions" integer NOT NULL DEFAULT '0', "status" "public"."shots_status_enum" NOT NULL DEFAULT '1', "serviceId" uuid, "typeId" uuid, "userId" uuid, CONSTRAINT "PK_40b52561334dcee2a4421b371d7" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "login" character varying(300) NOT NULL, "password" character varying NOT NULL, "picture" character varying(300) NOT NULL DEFAULT '', "balance" integer NOT NULL DEFAULT '0', CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "login" character varying(300) NOT NULL, "password" character varying NOT NULL, "balance" integer NOT NULL DEFAULT '0', CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "refresh_tokens" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "userId" uuid NOT NULL, "token" character varying NOT NULL, "expiresIn" date NOT NULL, CONSTRAINT "PK_7d8bee0204106019488c4c50ffa" PRIMARY KEY ("id"))`,

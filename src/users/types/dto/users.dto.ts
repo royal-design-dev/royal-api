@@ -22,11 +22,6 @@ export class UsersDto implements Readonly<UsersDto> {
   @IsString()
   password: string;
 
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  picture: string;
-
   @ApiHideProperty()
   @IsOptional()
   @IsNumber()

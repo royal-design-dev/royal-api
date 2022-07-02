@@ -13,6 +13,9 @@ export class BindsEntity {
   @Column({ type: 'varchar', length: 300, default: '' })
   name: string;
 
+  @Column({ type: 'varchar', length: 300, default: '' })
+  picture: string;
+
   @ManyToOne(() => UsersEntity, (user) => user.binds)
   user: UsersEntity;
 

@@ -25,7 +25,6 @@ export class ShotsRepository extends Repository<ShotsEntity> {
         'shots.title',
         'shots.shotUrl',
         'shots.created_at',
-        'shots.picture',
         'shots.price',
         'shots.count',
         'shots.executions',
@@ -36,7 +35,6 @@ export class ShotsRepository extends Repository<ShotsEntity> {
         'type.name',
         'type.slug',
         'user.login',
-        'user.picture',
       ])
       .skip(offset)
       .take(limit)

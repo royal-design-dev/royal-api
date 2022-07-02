@@ -25,9 +25,6 @@ export class UsersEntity {
   @Exclude()
   password: string;
 
-  @Column({ type: 'varchar', length: 300, default: '' })
-  picture: string;
-
   @Column({ type: 'integer', nullable: false, default: 0 })
   balance: number;
 

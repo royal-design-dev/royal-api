@@ -10,6 +10,11 @@ export class BindsDto implements Readonly<BindsDto> {
   name: string;
 
   @ApiProperty()
+  @IsOptional()
+  @IsString()
+  picture: string;
+
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   token: string;
