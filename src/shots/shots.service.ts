@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BindsService } from 'src/binds/binds.service';
+import { DribbbleService } from 'src/binds/dribbble.service';
 import { ShotsRepository } from './shots.repository';
 import { ShotsCreateDtoProps } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
@@ -11,6 +12,7 @@ export class ShotsService {
     @InjectRepository(ShotsRepository)
     private readonly shotsRepository: ShotsRepository,
     private readonly bindsService: BindsService,
+    private readonly dribbbleService: DribbbleService,
   ) {}
 
   async findAndCount(filter: ShotsFilterDto) {
@@ -31,9 +33,16 @@ export class ShotsService {
     if (!findBind)
       throw new NotFoundException('You account not bind from this service');
 
-    const item = await this.shotsRepository.create(shot);
+    // TODO: trycatch
+    const mySHot = await this.dribbbleService.getMyShotByUrl(
+      shot.shotUrl,
+      findBind.token,
+    );
+    // console.log(shot, findBind);
 
-    return await this.shotsRepository.save(item);
+    // const item = await this.shotsRepository.create(shot);
+
+    // return await this.shotsRepository.save(item);
   }
 
   async remove(id: string) {

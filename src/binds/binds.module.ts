@@ -14,8 +14,7 @@ import { DribbbleService } from './dribbble.service';
     ServicesModule,
     HttpModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        baseURL: configService.get('DRIBBBLE_API'),
+      useFactory: async () => ({
         timeout: 5000,
         maxRedirects: 5,
       }),
@@ -24,6 +23,6 @@ import { DribbbleService } from './dribbble.service';
   ],
   controllers: [BindsController],
   providers: [BindsService, DribbbleService],
-  exports: [BindsService],
+  exports: [BindsService, DribbbleService],
 })
 export class BindsModule {}

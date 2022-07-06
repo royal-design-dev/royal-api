@@ -14,18 +14,16 @@ export class DribbbleService {
   ) {}
 
   getToken = async (code: string, serviceSlug: string) => {
-    const DRIBBBLE_CLIENT_ID = this.configService.get('DRIBBBLE_CLIENT_ID');
-    const DRIBBBLE_CLIENT_SECRET = this.configService.get(
-      'DRIBBBLE_CLIENT_SECRET',
-    );
+    const client_id = this.configService.get('DRIBBBLE_CLIENT_ID');
+    const client_secret = this.configService.get('DRIBBBLE_CLIENT_SECRET');
     const DRIBBBLE_REDIRECT_URL = this.configService.get(
       'DRIBBBLE_REDIRECT_URL',
     );
 
-    const { data } = await this.httpService
+    const response = await this.httpService
       .post<DribbbleUserRo>('https://dribbble.com/oauth/token', {
-        DRIBBBLE_CLIENT_ID,
-        DRIBBBLE_CLIENT_SECRET,
+        client_id,
+        client_secret,
         code,
         redirect_uri: `${DRIBBBLE_REDIRECT_URL}${serviceSlug}`,
       })
@@ -37,7 +35,7 @@ export class DribbbleService {
       )
       .toPromise();
 
-    return data;
+    return response?.data;
   };
 
   getDtoObject = async (
@@ -64,4 +62,35 @@ export class DribbbleService {
       user: { id: userId },
     };
   };
+
+  getMyShotByUrl = async (shotUrl: string, access_token: string) => {
+    const api = this.configService.get('DRIBBBLE_API');
+
+    const shotId = shotUrl.split('/').pop().split('-')[0];
+
+    const response = await this.httpService
+      .get(`${api}/shots/${shotId}`, {
+        params: { access_token },
+      })
+      .pipe(
+        catchError((e) => {
+          throw new HttpException(e.response.data, e.response.status);
+        }),
+      )
+      .toPromise();
+
+    console.log(response);
+  };
+}
+
+{
+  "title": "Yanchenko",
+  "shotUrl": "https://dribbble.com/shots/18685714-Meow",
+  "price": 10,
+  "count": 50,
+  "status": 1,
+  "service": {
+    "id": "b165fc31-1e21-482a-adf2-8394b35568cf"
+  },
+  "type": "d449ca1c-529c-40d0-a6c7-7a3bb6b666ef"
 }
