@@ -21,6 +21,9 @@ export class ShotsEntity {
   @Column({ type: 'varchar', length: 300 })
   shotUrl: string;
 
+  @Column({ type: 'varchar', length: 300 })
+  picture: string;
+
   @CreateDateColumn()
   created_at: Date;
 

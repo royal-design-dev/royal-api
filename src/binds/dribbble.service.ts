@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DribbbleUserRo } from './types/ro/dribbble-token.ro';
+import { DribbbleShot, DribbbleUserRo } from './types/ro/dribbble-token.ro';
 
 import { catchError } from 'rxjs';
 import { BindsDto } from './types/dto/binds.dto';
@@ -68,8 +68,8 @@ export class DribbbleService {
 
     const shotId = shotUrl.split('/').pop().split('-')[0];
 
-    const response = await this.httpService
-      .get(`${api}/shots/${shotId}`, {
+    const { data } = await this.httpService
+      .get<DribbbleShot>(`${api}/shots/${shotId}`, {
         params: { access_token },
       })
       .pipe(
@@ -79,18 +79,6 @@ export class DribbbleService {
       )
       .toPromise();
 
-    console.log(response);
+    return data;
   };
-}
-
-{
-  "title": "Yanchenko",
-  "shotUrl": "https://dribbble.com/shots/18685714-Meow",
-  "price": 10,
-  "count": 50,
-  "status": 1,
-  "service": {
-    "id": "b165fc31-1e21-482a-adf2-8394b35568cf"
-  },
-  "type": "d449ca1c-529c-40d0-a6c7-7a3bb6b666ef"
 }

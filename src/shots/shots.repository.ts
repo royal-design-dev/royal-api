@@ -27,6 +27,7 @@ export class ShotsRepository extends Repository<ShotsEntity> {
         'shots.created_at',
         'shots.price',
         'shots.count',
+        'shots.picture',
         'shots.executions',
         'shots.status',
         'service.name',

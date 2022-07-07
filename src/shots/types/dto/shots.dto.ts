@@ -1,4 +1,4 @@
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty, PickType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsEnum,
@@ -28,6 +28,11 @@ export class ShotsDto implements Readonly<ShotsDto> {
   @IsNotEmpty()
   @IsString()
   shotUrl: string;
+
+  @ApiHideProperty()
+  @IsOptional()
+  @IsString()
+  picture: string;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -38,11 +38,15 @@ export class ShotsService {
       shot.shotUrl,
       findBind.token,
     );
-    // console.log(shot, findBind);
 
-    // const item = await this.shotsRepository.create(shot);
+    // TODO: add views bot
 
-    // return await this.shotsRepository.save(item);
+    const item = await this.shotsRepository.create({
+      ...shot,
+      picture: mySHot.images.hidpi,
+    } as ShotsCreateDtoProps);
+
+    return await this.shotsRepository.save(item);
   }
 
   async remove(id: string) {
