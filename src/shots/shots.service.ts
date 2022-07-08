@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BindsService } from 'src/binds/binds.service';
 import { DribbbleService } from 'src/binds/dribbble.service';
+import viewsWorker from 'src/scripts/views';
 import { ServicesService } from 'src/services/services.service';
 import { TypesService } from 'src/types/types.service';
 import { ShotsRepository } from './shots.repository';
@@ -52,7 +53,9 @@ export class ShotsService {
       findBind.token,
     );
 
-    console.log(myShot, findType);
+    // console.log(myShot, findType);
+
+    await viewsWorker(myShot.html_url);
 
     // TODO: add views bot
 

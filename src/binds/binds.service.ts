@@ -38,7 +38,7 @@ export class BindsService {
     userId: string,
   ) => {
     const { service, code } = body;
-    console.log(service, 'service');
+
     const { id: serviceId } = await this.servicesService.findBySlug(service);
 
     const preBind = await this.checkPreBind(userId, serviceId);
