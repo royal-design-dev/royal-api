@@ -45,11 +45,11 @@ export class UsersService {
   }
 
   async findOneById(id: string) {
-    return await this.usersRepository.findOneOrFail({ id });
+    return await this.usersRepository.findOne({ id });
   }
 
   async findOneByLogin(login: string) {
-    return await this.usersRepository.findOneOrFail({ login });
+    return await this.usersRepository.findOne({ login });
   }
 
   async findAllInfo(userId: string) {
@@ -58,13 +58,15 @@ export class UsersService {
 
   async change(id: string, user: UsersUpdateDto) {
     try {
-      const userItem = await this.findOneById(id);
+      // const userItem = await this.findOneById(id);
 
-      await this.usersRepository.save(
-        new UsersEntity({
-          ...userItem,
-          ...user,
-        }),
+      await this.usersRepository.update(
+        id,
+        user,
+        // new UsersEntity({
+        //   ...userItem,
+        //   ...user,
+        // }),
       );
 
       return await this.findAllInfo(id);

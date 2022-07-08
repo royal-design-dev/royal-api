@@ -32,7 +32,7 @@ export class TypesController {
   @Roles(Role.Admin)
   @Auth()
   @ApiOperation({
-    summary: 'Create type',
+    summary: 'Create type(Only admin)',
   })
   @ApiBody({
     description: 'Type object that needs to be added',

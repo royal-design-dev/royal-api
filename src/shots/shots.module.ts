@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BindsModule } from 'src/binds/binds.module';
+import { ServicesModule } from 'src/services/services.module';
+import { TypesModule } from 'src/types/types.module';
 import { ShotsController } from './shots.controller';
 import { ShotsRepository } from './shots.repository';
 import { ShotsService } from './shots.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ShotsRepository]), BindsModule],
+  imports: [
+    TypeOrmModule.forFeature([ShotsRepository]),
+    BindsModule,
+    TypesModule,
+    ServicesModule,
+  ],
   controllers: [ShotsController],
   providers: [ShotsService],
   exports: [ShotsService],

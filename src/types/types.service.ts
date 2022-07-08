@@ -19,4 +19,6 @@ export class TypesService {
   async findAll() {
     return await this.typesRepository.find();
   }
+
+  findById = async (id: string) => await this.typesRepository.findOne({ id });
 }

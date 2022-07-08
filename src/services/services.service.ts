@@ -25,7 +25,10 @@ export class ServicesService {
   findAll = async () => await this.servicesRepository.findAll();
 
   findBySlug = async (slug: string) =>
-    await this.servicesRepository.findOneOrFail({ slug });
+    await this.servicesRepository.findOne({ slug });
+
+  findById = async (id: string) =>
+    await this.servicesRepository.findOne({ id });
 
   getAuthLinkByService = (serviceSlug: string) => {
     const DRIBBBLE_CLIENT_ID = this.configService.get('DRIBBBLE_CLIENT_ID');

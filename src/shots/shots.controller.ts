@@ -63,7 +63,6 @@ export class ShotsController {
   }
 
   @Get()
-  @Roles(Role.None)
   @Auth()
   @ApiOperation({
     summary: 'Return list of shots with count',

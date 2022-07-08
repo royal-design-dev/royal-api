@@ -19,7 +19,9 @@ export class UsersRepository extends Repository<UsersEntity> {
         'users.role',
         'binds.name',
         'binds.picture',
-        'service',
+        'service.id',
+        'service.name',
+        'service.slug',
       ]);
 
     return await builder.getOne();
