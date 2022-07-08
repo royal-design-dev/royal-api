@@ -3,8 +3,6 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -14,6 +12,7 @@ import { Exclude } from 'class-transformer';
 import { RefreshToken } from 'src/auth/entity/refreshtoken.entity';
 import { ShotsEntity } from 'src/shots/entity/shots.entity';
 import { BindsEntity } from 'src/binds/entity/binds.entity';
+import { Role } from 'src/auth/roles/role.enum';
 
 @Entity('users')
 export class UsersEntity {
@@ -29,6 +28,13 @@ export class UsersEntity {
 
   @Column({ type: 'integer', nullable: false, default: 0 })
   balance: number;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.None,
+  })
+  role: Role;
 
   @OneToMany(
     () => RefreshToken,

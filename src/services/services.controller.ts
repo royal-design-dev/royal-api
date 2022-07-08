@@ -16,6 +16,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import Auth from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/auth/roles/role.decorator';
+import { Role } from 'src/auth/roles/role.enum';
 import { ServicesService } from './services.service';
 import { ServicesCreateDto } from './types/dto/services-create.dto';
 import { ServicesCreateRo } from './types/ro/services-create.ro';
@@ -27,9 +29,10 @@ export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
+  @Roles(Role.Admin)
   @Auth()
   @ApiOperation({
-    summary: 'Create service',
+    summary: 'Create service(Only Admin)',
   })
   @ApiBody({
     description: 'Service object that needs to be added',

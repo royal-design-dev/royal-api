@@ -40,6 +40,7 @@ export class AuthService {
     return {
       userId: sub,
       login,
+      role: user.role,
     };
   }
 }

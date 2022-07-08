@@ -10,6 +10,7 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import {
@@ -23,6 +24,9 @@ import {
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import Auth from 'src/auth/guards/auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/roles/role.decorator';
+import { Role } from 'src/auth/roles/role.enum';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
@@ -59,6 +63,8 @@ export class ShotsController {
   }
 
   @Get()
+  @Roles(Role.None)
+  @Auth()
   @ApiOperation({
     summary: 'Return list of shots with count',
   })

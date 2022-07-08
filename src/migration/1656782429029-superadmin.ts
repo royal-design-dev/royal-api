@@ -10,6 +10,7 @@ export class superadmin1656782429029 implements MigrationInterface {
     await queryRunner.manager.insert(UsersEntity, {
       login: 'superadmin',
       password: await hash('super', 12),
+      role: 6,
     });
   }
 

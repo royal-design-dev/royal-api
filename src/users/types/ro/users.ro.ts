@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsNumber, IsString, IsUUID } from 'class-validator';
+import { Role } from 'src/auth/roles/role.enum';
 import { BindsEntity } from 'src/binds/entity/binds.entity';
 import { ShotsEntity } from 'src/shots/entity/shots.entity';
 
@@ -15,6 +16,16 @@ export class UsersRo implements Readonly<UsersRo> {
   @ApiProperty()
   @IsNumber()
   balance: number;
+
+  @ApiProperty({
+    description: 'Role',
+    enum: Role,
+    nullable: true,
+    required: false,
+    default: Role.None,
+  })
+  @IsEnum(Role)
+  role: Role;
 
   @ApiProperty({ type: ShotsEntity, isArray: true })
   shots: ShotsEntity[];

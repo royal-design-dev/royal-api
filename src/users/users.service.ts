@@ -3,12 +3,14 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginUserDto } from 'src/auth/types/dto/login-user.dto';
 import { UsersEntity } from 'src/users/entity/users.entity';
 import { UsersCreateDto } from './types/dto/users-create.dto';
+import { UsersUpdateDto } from './types/dto/users-update.dto';
 import { UsersRepository } from './users.repository';
 
 @Injectable()
@@ -52,5 +54,22 @@ export class UsersService {
 
   async findAllInfo(userId: string) {
     return await this.usersRepository.findAllInfo(userId);
+  }
+
+  async change(id: string, user: UsersUpdateDto) {
+    try {
+      const userItem = await this.findOneById(id);
+
+      await this.usersRepository.save(
+        new UsersEntity({
+          ...userItem,
+          ...user,
+        }),
+      );
+
+      return await this.findAllInfo(id);
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
   }
 }

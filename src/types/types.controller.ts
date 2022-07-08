@@ -16,6 +16,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import Auth from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/auth/roles/role.decorator';
+import { Role } from 'src/auth/roles/role.enum';
 import { TypesService } from './types.service';
 import { TypesCreateDto } from './types/dto/types-create.dto';
 import { TypesCreateRo } from './types/ro/types-create.ro';
@@ -27,6 +29,7 @@ export class TypesController {
   constructor(private readonly typesService: TypesService) {}
 
   @Post()
+  @Roles(Role.Admin)
   @Auth()
   @ApiOperation({
     summary: 'Create type',

@@ -5,10 +5,11 @@ import {
   ApiForbiddenResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { RolesGuard } from './roles.guard';
 
 const Auth = () =>
   applyDecorators(
-    UseGuards(AuthGuard('jwt')),
+    UseGuards(AuthGuard('jwt'), RolesGuard),
     ApiBearerAuth(),
     ApiForbiddenResponse({ description: 'Forbidden' }),
     ApiUnauthorizedResponse({ description: 'Unauthorized' }),

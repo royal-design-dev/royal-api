@@ -6,6 +6,7 @@ import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { RefreshToken } from './entity/refreshtoken.entity';
+import { RolesGuard } from './guards/roles.guard';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TokenService } from './token.service';
 
@@ -27,7 +28,13 @@ import { TokenService } from './token.service';
     forwardRef(() => UsersModule),
   ],
   controllers: [AuthController],
-  providers: [AuthService, ConfigService, JwtStrategy, TokenService],
+  providers: [
+    AuthService,
+    ConfigService,
+    JwtStrategy,
+    TokenService,
+    RolesGuard,
+  ],
   exports: [AuthService, TokenService],
 })
 export class AuthModule {}
