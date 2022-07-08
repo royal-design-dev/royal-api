@@ -64,8 +64,8 @@ export class UsersController {
   }
 
   @Patch('info/:id')
-  // @Roles(Role.Admin)
-  // @Auth()
+  @Roles(Role.Admin)
+  @Auth()
   @ApiParam({
     description: 'Id of user to change(Only Admin)',
     name: 'id',

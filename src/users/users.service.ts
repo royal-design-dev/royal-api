@@ -58,16 +58,9 @@ export class UsersService {
 
   async change(id: string, user: UsersUpdateDto) {
     try {
-      // const userItem = await this.findOneById(id);
+      const userItem = await this.findOneById(id);
 
-      await this.usersRepository.update(
-        id,
-        user,
-        // new UsersEntity({
-        //   ...userItem,
-        //   ...user,
-        // }),
-      );
+      await this.usersRepository.update(id, Object.assign(userItem, user));
 
       return await this.findAllInfo(id);
     } catch (error) {
