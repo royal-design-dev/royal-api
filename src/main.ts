@@ -1,3 +1,5 @@
+// import * as csurf from 'csurf';
+
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -13,6 +15,8 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, skipMissingProperties: false }),
   );
+  // TODO: настроить CSRF защиту
+  // app.use(csurf({}));
 
   const swaggerOptions = new DocumentBuilder()
     .setTitle('Uplix api')

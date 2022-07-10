@@ -27,6 +27,7 @@ import Auth from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/roles/role.decorator';
 import { Role } from 'src/auth/roles/role.enum';
+import getCookieAuth from 'src/common/scripts/getCookieAuth';
 import { ShotsService } from './shots.service';
 import { ShotsCreateDto } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
