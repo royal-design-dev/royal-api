@@ -1,8 +1,8 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
+import { BindsEntity } from 'src/binds/entity/binds.entity';
 import { ServicesRo } from 'src/services/types/ro/services.ro';
 import { TypesRo } from 'src/types/types/ro/types.ro';
-import { UsersRo } from 'src/users/types/ro/users.ro';
 import { ShotsDto } from '../dto/shots.dto';
 
 export class ShotsRo extends PickType(ShotsDto, [
@@ -17,8 +17,8 @@ export class ShotsRo extends PickType(ShotsDto, [
   @IsString()
   picture: string;
 
-  @ApiProperty({ type: UsersRo })
-  user: UsersRo;
+  @ApiProperty({ type: BindsEntity })
+  user: BindsEntity;
 
   @ApiProperty({ type: TypesRo })
   type: TypesRo;

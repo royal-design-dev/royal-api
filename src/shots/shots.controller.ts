@@ -115,6 +115,31 @@ export class ShotsController {
     return await this.shotsService.remove(id);
   }
 
+  @Post('perform/:id')
+  @Auth()
+  @ApiParam({
+    description: 'id of shot to perform',
+    name: 'id',
+  })
+  @ApiOperation({
+    summary: 'Perform shot',
+  })
+  // @ApiCreatedResponse({
+  //   description: 'Successful operation',
+  //   type: ShotsCreateRo,
+  // })
+  @HttpCode(HttpStatus.CREATED)
+  async perform(
+    @Param('id', ParseUUIDPipe) shotId: string,
+    @Req() req: Request,
+  ) {
+    const { userId } = req.user as { userId: string };
+
+    console.log(userId, shotId);
+
+    return await this.shotsService.perform(userId, shotId);
+  }
+
   // @Patch(':id')
   // @ApiOperation({
   //   summary: 'Change Shot by id',

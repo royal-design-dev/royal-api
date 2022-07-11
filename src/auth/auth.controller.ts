@@ -15,8 +15,11 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import getCookieAuth from 'src/common/scripts/getCookieAuth';
 import { AuthService } from './auth.service';
 import Auth from './guards/auth.guard';
+import { Roles } from './roles/role.decorator';
+import { Role } from './roles/role.enum';
 import { TokenService } from './token.service';
 import { LoginUserDto } from './types/dto/login-user.dto';
 import { RefreshTokensDto } from './types/dto/refresh-tokens.dto';
@@ -90,21 +93,18 @@ export class AuthController {
     return true;
   }
 
-  // @Get('/check-post')
-  // @ApiOperation({
-  //   summary: 'Change Shot by id',
-  // })
-  // @ApiOkResponse({
-  //   description: 'Successful operation',
-  //   type: ShotsRo,
-  // })
-  // @HttpCode(HttpStatus.OK)
-  // @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
-  // async checkPost(@Body() body: any): Promise<any> {
-  //   console.log(body);
-
-  //   // await page();
-
-  //   return true;
-  // }
+  @Post('cookies')
+  @Roles(Role.Admin)
+  @Auth()
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Get cookies tokens',
+  })
+  @ApiOkResponse({
+    description: 'Successful operation',
+  })
+  @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
+  public async getCookies(): Promise<boolean> {
+    return await getCookieAuth();
+  }
 }

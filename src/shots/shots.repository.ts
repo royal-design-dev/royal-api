@@ -20,22 +20,27 @@ export class ShotsRepository extends Repository<ShotsEntity> {
       .leftJoinAndSelect(`${this.alias}.service`, 'service')
       .leftJoinAndSelect(`${this.alias}.type`, 'type')
       .leftJoinAndSelect(`${this.alias}.user`, 'user')
+      .leftJoinAndSelect('user.binds', 'binds', 'binds.service = service.id')
       .select([
-        'shots.id',
-        'shots.title',
-        'shots.shotUrl',
-        'shots.created_at',
-        'shots.price',
-        'shots.count',
-        'shots.picture',
-        'shots.executions',
-        'shots.status',
+        `${this.alias}.id`,
+        `${this.alias}.title`,
+        `${this.alias}.shotUrl`,
+        `${this.alias}.created_at`,
+        `${this.alias}.id`,
+        `${this.alias}.price`,
+        `${this.alias}.count`,
+        `${this.alias}.picture`,
+        `${this.alias}.executions`,
+        `${this.alias}.status`,
         'service.name',
         'service.status',
         'service.slug',
+        'type.id',
         'type.name',
         'type.slug',
-        'user.login',
+        'user.id',
+        'binds.name',
+        'binds.picture',
       ])
       .skip(offset)
       .take(limit)
@@ -56,13 +61,36 @@ export class ShotsRepository extends Repository<ShotsEntity> {
         types: toArray(types),
       });
 
-    return (await builder.getManyAndCount()) as unknown as [ShotsRo[], number];
+    const [data, count] = await builder.getManyAndCount();
+
+    const formattData = data.map((item) => ({
+      ...item,
+      user: item.user.binds[0],
+    }));
+
+    return [formattData, count] as unknown as [ShotsRo[], number];
   }
 
   async findOneById(id: string) {
     const builder = this.createQueryBuilder(this.alias)
-      .where({ id })
-      .leftJoinAndSelect(`${this.alias}.services`, 'services');
+      .leftJoinAndSelect(`${this.alias}.service`, 'service')
+      .leftJoinAndSelect(`${this.alias}.user`, 'user')
+      .select([
+        `${this.alias}.id`,
+        `${this.alias}.title`,
+        `${this.alias}.shotUrl`,
+        `${this.alias}.picture`,
+        `${this.alias}.created_at`,
+        `${this.alias}.price`,
+        `${this.alias}.count`,
+        `${this.alias}.executions`,
+        `${this.alias}.status`,
+        'service.id',
+        'service.name',
+        'service.slug',
+        'user.id',
+      ])
+      .where({ id });
 
     return (await builder.getOneOrFail()) as unknown as ShotsRo;
   }

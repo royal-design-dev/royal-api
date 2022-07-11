@@ -4,6 +4,7 @@ import { BindsRo } from './binds.ro';
 export class BindsListRo extends PickType(BindsRo, [
   'id',
   'name',
+  'userServiceId',
   'service',
   'picture',
 ]) {}

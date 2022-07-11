@@ -61,6 +61,7 @@ export class BindsService {
         'binds.id',
         'binds.name',
         'binds.picture',
+        'binds.userServiceId',
         'service.id',
         'service.name',
         'service.slug',

@@ -18,7 +18,9 @@ const viewsWorker = async (url: string) => {
 
   await page.goto(url);
 
-  await page.waitForTimeout(2000);
+  await page.waitForNavigation({ waitUntil: 'load' });
+
+  await page.waitForTimeout(1000);
   await page.close();
 };
 

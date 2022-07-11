@@ -5,4 +5,5 @@ export class BindsCreateRo extends PickType(BindsRo, [
   'name',
   'service',
   'picture',
+  'userServiceId',
 ]) {}

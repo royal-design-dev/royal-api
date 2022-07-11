@@ -20,6 +20,10 @@ export class BindsRo implements Readonly<BindsRo> {
   @IsString()
   token: string;
 
+  @ApiProperty()
+  @IsString()
+  userServiceId: string;
+
   @ApiProperty({ type: OmitType(ServicesCreateRo, ['status']) })
   service: ServicesCreateRo;
 

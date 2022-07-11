@@ -1,13 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BindsService } from 'src/binds/binds.service';
 import { DribbbleService } from 'src/binds/dribbble.service';
-import viewsWorker from 'src/common/scripts/views';
 import { ServicesService } from 'src/services/services.service';
 import { TypesService } from 'src/types/types.service';
+import { UsersService } from 'src/users/users.service';
 import { ShotsRepository } from './shots.repository';
 import { ShotsCreateDtoProps } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
+
+import performLikeChecker from 'src/common/scripts/performLike';
 
 @Injectable()
 export class ShotsService {
@@ -18,17 +24,18 @@ export class ShotsService {
     private readonly dribbbleService: DribbbleService,
     private readonly typesService: TypesService,
     private readonly servicesService: ServicesService,
+    private readonly usersService: UsersService,
   ) {}
 
-  async findAndCount(filter: ShotsFilterDto) {
+  findAndCount = async (filter: ShotsFilterDto) => {
     return this.shotsRepository.findAllAndCount(filter);
-  }
+  };
 
-  async findById(id: string) {
+  findById = async (id: string) => {
     return this.shotsRepository.findOneById(id);
-  }
+  };
 
-  async create(shot: ShotsCreateDtoProps) {
+  create = async (shot: ShotsCreateDtoProps) => {
     const {
       user: { id: userId },
       service: { id: serviceId },
@@ -53,26 +60,54 @@ export class ShotsService {
       findBind.token,
     );
 
-    // console.log(myShot, findType);
+    // TODO: ADD worker threads
 
-    await viewsWorker(myShot.html_url);
+    // await viewsWorker(myShot.html_url);
 
-    // TODO: add views bot
+    const item = await this.shotsRepository.create({
+      ...shot,
+      picture: myShot.images.hidpi,
+    } as ShotsCreateDtoProps);
 
-    // const item = await this.shotsRepository.create({
-    //   ...shot,
-    //   picture: mySHot.images.hidpi,
-    // } as ShotsCreateDtoProps);
+    return await this.shotsRepository.save(item);
+  };
 
-    // return await this.shotsRepository.save(item);
-  }
-
-  async remove(id: string) {
+  remove = async (id: string) => {
     const rows = await this.shotsRepository.delete({ id });
 
     if (rows.affected === 0)
       throw new NotFoundException(`Shot with id ${id} not found`);
-  }
+  };
+
+  perform = async (userId: string, shotId: string) => {
+    const shot = await this.shotsRepository.findOneById(shotId);
+    const user = await this.usersService.findAllInfo(userId);
+
+    if (shot.user.id === userId)
+      throw new ForbiddenException("You can't complete your tasks");
+
+    const {
+      shotUrl,
+      service: { slug },
+    } = shot;
+    const { binds } = user;
+
+    const currentBind = binds.find((bind) => bind.service.slug === slug);
+
+    if (!currentBind)
+      throw new ForbiddenException(
+        "Unfortunately you don't have a link to the service",
+      );
+
+    // TODO: try catch
+
+    const checkPerform = await performLikeChecker(
+      shotUrl,
+      currentBind.userServiceId,
+    );
+
+    return checkPerform;
+  };
 
   // async change(id: string, updateShotDto: ShotsUpdateDto) {
   //   try {

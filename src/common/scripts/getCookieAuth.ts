@@ -5,7 +5,7 @@ import { dirname } from 'path';
 import p from 'puppeteer';
 
 const getCookieAuth = async () => {
-  const browser = await p.launch({ headless: false });
+  const browser = await p.launch();
   const config = new ConfigService();
 
   const login = config.get('DRIBBBLE_AUTH_LOGIN');

@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Req,
@@ -80,7 +81,10 @@ export class UsersController {
   })
   @ApiOkResponse({ description: 'Successful operation', type: UsersUpdateRo })
   @HttpCode(HttpStatus.CREATED)
-  public async change(@Param('id') id: string, @Body() user: UsersUpdateDto) {
+  public async change(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() user: UsersUpdateDto,
+  ) {
     return await this.usersService.change(id, user);
   }
 }
