@@ -3,8 +3,13 @@ import p from 'puppeteer';
 import { readFile } from 'fs/promises';
 import { dirname } from 'path';
 
-const performLikeChecker = async (url: string, checkId: string) => {
-  console.log(url, checkId);
+const performDrbLikeChecker = async ({
+  url,
+  checkId,
+}: {
+  url: string;
+  checkId: string;
+}) => {
   const cookies = await readFile(
     `${dirname(require.main.filename)}/cookies.json`,
     {
@@ -20,13 +25,21 @@ const performLikeChecker = async (url: string, checkId: string) => {
   const page = await browser.newPage();
 
   await page.setCookie(...JSON.parse(cookies));
-  await page.goto(`${url}/fans`);
+  await page.goto(url);
 
-  const currentLike = await page.$(`li[data-user-id="${checkId}"]`);
+  await page.evaluate(() => {
+    (
+      document.querySelector(
+        'button[data-original-title="Feedback"]',
+      ) as HTMLButtonElement
+    ).click();
+  });
+
+  const currentLike = await page.$(`img[data-id="${checkId}"]`);
 
   await browser.close();
 
   return !!currentLike;
 };
 
-export default performLikeChecker;
+export default performDrbLikeChecker;

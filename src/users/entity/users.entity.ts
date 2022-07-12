@@ -3,6 +3,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -54,6 +55,11 @@ export class UsersEntity {
     cascade: true,
   })
   binds: BindsEntity[];
+
+  @ManyToMany(() => ShotsEntity, (shot) => shot.performeds, {
+    cascade: true,
+  })
+  performeds: ShotsEntity[];
 
   @BeforeInsert()
   @BeforeUpdate()

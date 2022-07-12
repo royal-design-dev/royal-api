@@ -75,6 +75,7 @@ export class ShotsRepository extends Repository<ShotsEntity> {
     const builder = this.createQueryBuilder(this.alias)
       .leftJoinAndSelect(`${this.alias}.service`, 'service')
       .leftJoinAndSelect(`${this.alias}.user`, 'user')
+      .leftJoinAndSelect(`${this.alias}.performeds`, 'performeds')
       .select([
         `${this.alias}.id`,
         `${this.alias}.title`,
@@ -85,6 +86,7 @@ export class ShotsRepository extends Repository<ShotsEntity> {
         `${this.alias}.count`,
         `${this.alias}.executions`,
         `${this.alias}.status`,
+        'performeds',
         'service.id',
         'service.name',
         'service.slug',

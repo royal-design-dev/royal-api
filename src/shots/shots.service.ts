@@ -12,8 +12,12 @@ import { UsersService } from 'src/users/users.service';
 import { ShotsRepository } from './shots.repository';
 import { ShotsCreateDtoProps } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
+import { ShotsStatusEnum } from './types/enums/shots';
 
-import performLikeChecker from 'src/common/scripts/performLike';
+import {
+  performDrbLikeChecker,
+  performDrbCommentChecker,
+} from 'src/common/scripts';
 
 @Injectable()
 export class ShotsService {
@@ -55,6 +59,7 @@ export class ShotsService {
     if (!findType) throw new NotFoundException('Type not found');
 
     // TODO: trycatch
+    // TODO: описать логику с пользоватлем
     const myShot = await this.dribbbleService.getMyShotByUrl(
       shot.shotUrl,
       findBind.token,
@@ -72,39 +77,83 @@ export class ShotsService {
     return await this.shotsRepository.save(item);
   };
 
-  remove = async (id: string) => {
-    const rows = await this.shotsRepository.delete({ id });
+  remove = async (userId: string, shotId: string) => {
+    const shot = await this.findById(shotId);
+
+    const { count, executions, price } = shot;
+
+    const returnPrice = (count - executions) * price;
+
+    await this.usersService.change(userId, { balance: returnPrice });
+
+    const rows = await this.shotsRepository.delete({ id: shotId });
 
     if (rows.affected === 0)
-      throw new NotFoundException(`Shot with id ${id} not found`);
+      throw new NotFoundException(`Shot with id ${shotId} not found`);
+
+    return true;
   };
 
   perform = async (userId: string, shotId: string) => {
-    const shot = await this.shotsRepository.findOneById(shotId);
+    const shot = await this.findById(shotId);
     const user = await this.usersService.findAllInfo(userId);
 
     if (shot.user.id === userId)
       throw new ForbiddenException("You can't complete your tasks");
 
     const {
+      count,
+      status,
       shotUrl,
-      service: { slug },
+      service: { slug: serviceSlug },
+      performeds,
+      type: { slug: typeSlug },
     } = shot;
     const { binds } = user;
 
-    const currentBind = binds.find((bind) => bind.service.slug === slug);
+    if (status === ShotsStatusEnum.COMPLETE) {
+      throw new ForbiddenException('This task is no longer available');
+    }
+
+    const currentBind = binds.find((bind) => bind.service.slug === serviceSlug);
 
     if (!currentBind)
       throw new ForbiddenException(
         "Unfortunately you don't have a link to the service",
       );
 
-    // TODO: try catch
+    const currentPerformed = performeds.find((perf) => perf.id === userId);
 
-    const checkPerform = await performLikeChecker(
-      shotUrl,
-      currentBind.userServiceId,
-    );
+    if (currentPerformed)
+      throw new ForbiddenException('You have already completed this task');
+
+    const check = {
+      url: shotUrl,
+      checkId: currentBind.userServiceId,
+    };
+
+    const checkPerform =
+      serviceSlug === 'dribbble'
+        ? typeSlug === 'likes'
+          ? await performDrbLikeChecker(check)
+          : typeSlug === 'comments'
+          ? await performDrbCommentChecker(check)
+          : typeSlug === 'views'
+        : false;
+
+    if (!checkPerform)
+      throw new ForbiddenException('The task could not be verified!');
+
+    shot.executions += 1;
+    shot.performeds.push(user);
+
+    if (count === shot.executions) shot.status = ShotsStatusEnum.COMPLETE;
+
+    await this.shotsRepository.save(shot);
+
+    await this.usersService.change(userId, {
+      balance: user.balance + shot.price,
+    });
 
     return checkPerform;
   };

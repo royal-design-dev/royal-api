@@ -81,23 +81,6 @@ export class ShotsController {
     return { data, count };
   }
 
-  @Get(':id')
-  @ApiOperation({
-    summary: 'Get Shot by id',
-  })
-  @ApiParam({
-    description: 'id of shot to get',
-    name: 'id',
-  })
-  @ApiOkResponse({
-    description: 'Successful operation',
-    type: ShotsRo,
-  })
-  @HttpCode(HttpStatus.OK)
-  async getById(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.shotsService.findById(id);
-  }
-
   @Delete(':id')
   @Auth()
   @ApiOperation({
@@ -111,8 +94,13 @@ export class ShotsController {
     description: 'Successful operation',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseUUIDPipe) id: string) {
-    return await this.shotsService.remove(id);
+  async remove(
+    @Param('id', ParseUUIDPipe) shotId: string,
+    @Req() req: Request,
+  ) {
+    const { userId } = req.user as { userId: string };
+
+    return await this.shotsService.remove(userId, shotId);
   }
 
   @Post('perform/:id')
@@ -124,18 +112,12 @@ export class ShotsController {
   @ApiOperation({
     summary: 'Perform shot',
   })
-  // @ApiCreatedResponse({
-  //   description: 'Successful operation',
-  //   type: ShotsCreateRo,
-  // })
   @HttpCode(HttpStatus.CREATED)
   async perform(
     @Param('id', ParseUUIDPipe) shotId: string,
     @Req() req: Request,
   ) {
     const { userId } = req.user as { userId: string };
-
-    console.log(userId, shotId);
 
     return await this.shotsService.perform(userId, shotId);
   }

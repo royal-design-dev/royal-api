@@ -5,6 +5,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -43,12 +45,24 @@ export class ShotsEntity {
   })
   status: ShotsStatusEnum;
 
-  @ManyToOne(() => ServicesEntity, (service) => service.shots)
+  @ManyToOne(() => ServicesEntity, (service) => service.shots, {
+    onDelete: 'CASCADE',
+  })
   service: ServicesEntity;
 
-  @ManyToOne(() => TypesEntity, (type) => type.shots)
+  @ManyToOne(() => TypesEntity, (type) => type.shots, {
+    onDelete: 'CASCADE',
+  })
   type: TypesEntity;
 
-  @ManyToOne(() => UsersEntity, (user) => user.shots)
+  @ManyToOne(() => UsersEntity, (user) => user.shots, {
+    onDelete: 'CASCADE',
+  })
   user: UsersEntity;
+
+  @ManyToMany(() => UsersEntity, (user) => user.performeds, {
+    onDelete: 'CASCADE',
+  })
+  @JoinTable()
+  performeds: UsersEntity[];
 }

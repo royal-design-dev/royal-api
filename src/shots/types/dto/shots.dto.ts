@@ -12,6 +12,7 @@ import {
 import { ServicesCreateRo } from 'src/services/types/ro/services-create.ro';
 import { ServicesRo } from 'src/services/types/ro/services.ro';
 import { TypesRo } from 'src/types/types/ro/types.ro';
+import { UsersEntity } from 'src/users/entity/users.entity';
 import { ShotsStatusEnum } from '../enums/shots';
 
 export class ShotsDto implements Readonly<ShotsDto> {
@@ -33,6 +34,11 @@ export class ShotsDto implements Readonly<ShotsDto> {
   @IsOptional()
   @IsString()
   picture: string;
+
+  @ApiHideProperty()
+  @IsOptional()
+  @IsNumber()
+  executions: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -60,6 +66,9 @@ export class ShotsDto implements Readonly<ShotsDto> {
 
   @ApiProperty({ type: PickType(TypesRo, ['id']) })
   type: Pick<TypesRo, 'id'>;
+
+  @ApiHideProperty()
+  performeds?: UsersEntity[];
 }
 
 export class ShotsFilterDto {
