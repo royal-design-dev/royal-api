@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -18,6 +19,8 @@ import {
   performDrbLikeChecker,
   performDrbCommentChecker,
 } from 'src/common/scripts';
+import viewsWorker from 'src/common/scripts/views';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class ShotsService {
@@ -29,6 +32,7 @@ export class ShotsService {
     private readonly typesService: TypesService,
     private readonly servicesService: ServicesService,
     private readonly usersService: UsersService,
+    private readonly httpService: HttpService,
   ) {}
 
   findAndCount = async (filter: ShotsFilterDto) => {
@@ -44,6 +48,8 @@ export class ShotsService {
       user: { id: userId },
       service: { id: serviceId },
       type: { id: typeId },
+      price,
+      count,
     } = shot;
     const findBind = await this.bindsService.checkPreBind(userId, serviceId);
 
@@ -59,15 +65,22 @@ export class ShotsService {
     if (!findType) throw new NotFoundException('Type not found');
 
     // TODO: trycatch
-    // TODO: описать логику с пользоватлем
     const myShot = await this.dribbbleService.getMyShotByUrl(
       shot.shotUrl,
       findBind.token,
     );
 
-    // TODO: ADD worker threads
+    const { balance } = await this.usersService.findAllInfo(userId);
 
-    // await viewsWorker(myShot.html_url);
+    const priceTask = price * count;
+
+    if (balance < priceTask) throw new ConflictException('Insufficient funds');
+
+    await this.usersService.change(userId, {
+      balance: balance - priceTask,
+    });
+
+    await viewsWorker(myShot.html_url, count, this.httpService);
 
     const item = await this.shotsRepository.create({
       ...shot,
@@ -157,14 +170,4 @@ export class ShotsService {
 
     return checkPerform;
   };
-
-  // async change(id: string, updateShotDto: ShotsUpdateDto) {
-  //   try {
-  //     await this.shotsRepository.save({ id, ...updateShotDto });
-
-  //     return await this.findById(id);
-  //   } catch (error) {
-  //     throw new NotFoundException(error);
-  //   }
-  // }
 }
