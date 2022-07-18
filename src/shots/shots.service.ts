@@ -19,7 +19,7 @@ import {
   performDrbLikeChecker,
   performDrbCommentChecker,
 } from 'src/common/scripts';
-import viewsWorker from 'src/common/scripts/views';
+// import viewsWorker from 'src/common/scripts/views';
 import { HttpService } from '@nestjs/axios';
 
 @Injectable()
@@ -80,7 +80,7 @@ export class ShotsService {
       balance: balance - priceTask,
     });
 
-    await viewsWorker(myShot.html_url, count, this.httpService);
+    // await viewsWorker(myShot.html_url, count, this.httpService);
 
     const item = await this.shotsRepository.create({
       ...shot,

@@ -1,32 +1,29 @@
 version: '3.7'
 
 services:
-  backend_dev:
-    container_name: uplix_api_dev
-    image: backend_dev:1.0.0
-    build:
-      context: ../../
-      target: dev
-      dockerfile: ./docker/Dockerfile
-    env_file: ../.env
-    command: npm run start:debug
-    network_mode: 'host'
+  uplix_postgres:
+    image: postgres:13.1-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: db
     volumes:
-      - ../../:/home/node/app
-      - /home/node/app/node_modules
-    stdin_open: true
-    restart: unless-stopped
+      - uplix-postgres:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
 
-  backend_prod:
+  uplix_backend_prod:
     container_name: uplix_api_prod
-    image: backend_prod:1.0.0
+    image: uplix_backend_prod:1.0.0
     build:
       context: ../../
       target: prod
       dockerfile: ./docker/Dockerfile
     env_file: ../.env
     command: npm run start:prod
-    network_mode: 'host'
+    ports:
+      - 5000:5000
     volumes:
       - /home/node/app/node_modules
     stdin_open: true

@@ -1,4 +1,6 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BindsModule } from 'src/binds/binds.module';
 import { ServicesModule } from 'src/services/services.module';
@@ -15,6 +17,14 @@ import { ShotsService } from './shots.service';
     TypesModule,
     ServicesModule,
     UsersModule,
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async () => ({
+        timeout: 5000,
+        maxRedirects: 5,
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [ShotsController],
   providers: [ShotsService],

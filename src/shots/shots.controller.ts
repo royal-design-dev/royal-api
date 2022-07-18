@@ -1,3 +1,5 @@
+import { HttpService } from '@nestjs/axios';
+import { Worker, workerData } from 'worker_threads';
 import {
   Body,
   Controller,
@@ -33,12 +35,16 @@ import { ShotsCreateDto } from './types/dto/shots-create.dto';
 import { ShotsFilterDto } from './types/dto/shots.dto';
 import { ShotsCreateRo } from './types/ro/shots-create.ro';
 import { ShotsListAndCountRo, ShotsRo } from './types/ro/shots.ro';
+import viewsWorker from 'src/common/scripts/views';
 
 @ApiTags('shots')
 @Controller('shots')
 @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
 export class ShotsController {
-  constructor(private readonly shotsService: ShotsService) {}
+  constructor(
+    private readonly shotsService: ShotsService,
+    private readonly httpService: HttpService,
+  ) {}
 
   @Post()
   @Auth()
@@ -61,6 +67,21 @@ export class ShotsController {
     const { userId } = req.user as { userId: string };
 
     return await this.shotsService.create({ ...shotDto, user: { id: userId } });
+  }
+
+  @Post('a')
+  @Auth()
+  @ApiOperation({
+    summary: 'Create shot',
+  })
+  @HttpCode(HttpStatus.CREATED)
+  async createShot() {
+    viewsWorker(
+      'https://dribbble.com/shots/18695238-Finances-Tracker-Mobile-App',
+      10,
+      this.httpService,
+    );
+    return true;
   }
 
   @Get()

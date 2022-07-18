@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  postgres:
+  uplix_postgres:
     image: postgres:13.1-alpine
     environment:
       POSTGRES_USER: postgres
@@ -13,9 +13,9 @@ services:
     ports:
       - 5432:5432
 
-  backend_dev:
+  uplix_backend_dev:
     container_name: uplix_api_dev
-    image: backend_dev
+    image: uplix_backend_dev
     build:
       context: ../
       target: dev
@@ -24,18 +24,17 @@ services:
     command: npm run start:debug
     ports:
       - 5000:5000
-      - 9229:9229
     volumes:
       - ../:/home/node/app
       - /home/node/app/node_modules
     depends_on:
-      - postgres
+      - uplix_postgres
     stdin_open: true
     restart: unless-stopped
 
-  backend_prod:
+  uplix_backend_prod:
     container_name: uplix_api_prod
-    image: backend_prod
+    image: uplix_backend_prod
     build:
       context: ../
       target: prod
@@ -44,12 +43,11 @@ services:
     command: npm run start:prod
     ports:
       - 5000:5000
-      - 9229:9229
     volumes:
       - ../:/home/node/app
       - /home/node/app/node_modules
     depends_on:
-      - postgres
+      - uplix_postgres
     stdin_open: true
     restart: unless-stopped
 
