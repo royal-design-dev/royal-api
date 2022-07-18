@@ -36,6 +36,7 @@ import { ShotsFilterDto } from './types/dto/shots.dto';
 import { ShotsCreateRo } from './types/ro/shots-create.ro';
 import { ShotsListAndCountRo, ShotsRo } from './types/ro/shots.ro';
 import viewsWorker from 'src/common/scripts/views';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('shots')
 @Controller('shots')
@@ -44,6 +45,7 @@ export class ShotsController {
   constructor(
     private readonly shotsService: ShotsService,
     private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Post()
@@ -77,9 +79,10 @@ export class ShotsController {
   @HttpCode(HttpStatus.CREATED)
   async createShot() {
     viewsWorker(
-      'https://dribbble.com/shots/18695238-Finances-Tracker-Mobile-App',
+      'https://dribbble.com/shots/18685714-Meow',
       10,
       this.httpService,
+      this.configService,
     );
     return true;
   }
