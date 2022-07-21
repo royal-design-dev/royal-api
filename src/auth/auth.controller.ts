@@ -47,7 +47,7 @@ export class AuthController {
     type: LoginRo,
   })
   @ApiUnauthorizedResponse({
-    description: 'Authentication failed due to incorrect username or password.',
+    description: 'Something is wrong. Check you login or password.',
   })
   @ApiInternalServerErrorResponse({ description: 'Internal Server Error' })
   public async login(@Body(new ValidationPipe()) userDto: LoginUserDto) {
@@ -55,7 +55,7 @@ export class AuthController {
 
     if (!loginResults)
       throw new UnauthorizedException(
-        'Authentication failed due to incorrect username or password.',
+        'Something is wrong. Check you login or password.',
       );
 
     return loginResults;
